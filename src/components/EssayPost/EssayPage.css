@@ -1,0 +1,19 @@
+.essayPageCard {
+    width: 95%;
+    margin: auto;
+    margin-top: 1rem;
+    height: 95%;
+}
+
+.backButton {
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .essayPageCard {
+        width: 95%;
+        margin: auto;
+        margin-top: 2%;
+        height: 90%;
+    }
+}

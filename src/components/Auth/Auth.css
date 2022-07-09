@@ -1,0 +1,38 @@
+.formDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 3rem;
+    width: 500px;
+    height: 500px;
+    background: rgb(255,255,255);
+    background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(117,237,241,1) 23%, rgba(0,173,179,1) 100%);
+    border-radius: 5%;
+}
+
+.form{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.formField {
+    display: flex;
+    margin-top: 15px;
+}
+
+.submitButton {
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .formDiv {
+        width: 300px;
+        height: 400px;
+        font-size: 0.75rem;
+    }
+    .formField, .submitButton {
+        font-size: 0.75rem;
+    }
+}

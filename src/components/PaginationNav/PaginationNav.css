@@ -1,0 +1,26 @@
+.wordsPaginationNav {
+    position: fixed;
+    bottom: 6%;
+    left: 47%;
+}
+
+.essayPaginationNav {
+    margin-top: 3rem;
+    z-index: 0;
+}
+
+.paginationNav ul li button {
+    background-color: black;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .paginationNav {
+        bottom: 6%;
+        left: 40%;
+    }
+
+    .page-link {
+        font-size: 0.8rem;
+    }
+}

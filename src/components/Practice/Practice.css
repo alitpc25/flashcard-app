@@ -1,0 +1,18 @@
+.buttonDiv {
+    display: flex;
+    width: 30%;
+    margin: auto;
+    justify-content: space-evenly;
+    align-items:center;
+    margin-top: 2rem;
+}
+
+.btn {
+    margin-left: 0.4rem;
+}
+
+.buttonContainer {
+    text-align: center;
+    margin-top: 1rem;
+}
+

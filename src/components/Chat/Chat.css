@@ -1,0 +1,53 @@
+.userMessage {
+    margin-left: 20%;
+    background-color: white;
+    margin-top: 5px;
+    border-radius: 20px;
+    border-bottom-right-radius: 0;
+}
+
+.friendMessage {
+    margin-right: 20%;
+    background-color: rgb(100, 225, 241);
+    margin-top: 5px;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.messageDiv {
+    overflow: auto;
+    height: 560px;
+}
+
+.chatForm {
+    overflow: auto;
+    width: 500px;
+}
+
+.messageDiv::-webkit-scrollbar {
+    width: 15px;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.messageDiv::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-image: linear-gradient(180deg, #ecc149 0%, #61d4eb 99%);
+}
+
+.friendSelectButton:focus  {
+    font-weight: bold;
+    color: rgb(247, 211, 52);
+  }
+
+@media (max-width: 991px) {
+    .messageDiv {
+        width: 100%;
+        margin-top: 2rem;
+        background-color: rgba(80, 221, 240, 0.5);
+    }
+    .chatForm {
+        overflow: auto;
+        width: 100%;
+    }
+}

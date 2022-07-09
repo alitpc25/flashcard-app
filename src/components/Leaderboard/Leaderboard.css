@@ -1,0 +1,9 @@
+.FlashCard {
+    text-align: center;
+    margin: 5vh auto; 
+    padding: 180px 0;
+    width: 400px;
+    height: 400px; 
+    background-color: #e8feff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
