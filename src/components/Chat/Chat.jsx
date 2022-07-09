@@ -88,6 +88,9 @@ export default function Chat(props) {
                     if (myRef.current) {
                         myRef.current.scrollIntoView({ behavior: 'smooth' })
                     }
+                    if (stompClient == null && messageHistoryOfFriend) {
+                        connect()
+                    }
                 })
             }).catch(error => {
                 console.log(error)
@@ -99,7 +102,7 @@ export default function Chat(props) {
         }
     }
 
-    const selectedFriendId  = useRef(0);
+    const selectedFriendId = useRef(0);
 
     const handleFriendSelectClick = (e) => {
         setMessageHistoryOfUser(null)
@@ -112,37 +115,38 @@ export default function Chat(props) {
     const connect = () => {
         let socket = new SockJS('http://localhost:4000/ws');
         stompClient = over(socket);
+        console.log(messageHistoryOfFriend)
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/notifications', function (notificationResponse) {
                 showNotificationResponse(JSON.parse(notificationResponse.body));
             });
         });
     }
-    
+
     function showNotificationResponse(message) {
-        console.log(message)
-        if(message.userId != user.id && selectedFriendId.current == message.userId){
-            //setMessageHistoryOfFriend([...messageHistoryOfFriend, {id:message.id, sentAt:message.sentAt, text:message.text}])
-            getMessagesAndChat(message.userId)
+        if (message.userId != user.id && selectedFriendId.current == message.userId) {
+            setMessageHistoryOfFriend([...messageHistoryOfFriend, {id:message.id, sentAt:message.sentAt, text:message.text}])
+            allMessageHistory.current = [...allMessageHistory.current, {id:message.id, sentAt:message.sentAt, text:message.text}]
         }
     }
 
     function sendNotification(messageInfo) {
-        stompClient.send("/app/notify", {}, JSON.stringify({...messageInfo,'userId': user.id, 'friendId': friendId
-    }));
+        stompClient.send("/app/notify", {}, JSON.stringify({
+            ...messageInfo, 'userId': user.id, 'friendId': friendId
+        }));
     }
 
     useEffect(() => {
         if (myRef.current) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
         }
-        if(stompClient == null) {
+        if (stompClient == null && messageHistoryOfFriend) {
             connect()
         }
         if (!friendships) {
             getFriendships();
         }
-    }, [friendships, isAllDataFetched, myRef.current, messageHistoryOfUser])
+    }, [friendships, isAllDataFetched, myRef.current, messageHistoryOfUser,messageHistoryOfFriend])
 
     return (
         <div className="container">
@@ -159,7 +163,7 @@ export default function Chat(props) {
                     </div>}
                 </div>
                 <div id="messageDiv" className="col-lg-8 mb-4 messageDiv">
-                    {isAllDataFetched && messageHistoryOfFriend && messageHistoryOfUser && allMessageHistory.current.length == messageHistoryOfFriend.length + messageHistoryOfUser.length ?
+                    {isAllDataFetched && messageHistoryOfFriend && messageHistoryOfUser && allMessageHistory.current ?
                         <div>
                             <div className='overflow-auto'>
                                 {allMessageHistory.current.sort(function (x, y) {
