@@ -140,7 +140,7 @@ export default function Essay(props) {
                     <PaginationNav className="p-2" renderedAt="essay" pageNumberArray={pageNumberArray} handlePaginationButtonClick={handlePaginationButtonClick} pageNumber={pageNumber} currentPage={currentPage}></PaginationNav>
                 </div>
                 <div className='container'>
-                    <form className="row form-inline my-2 my-lg-0">
+                    <form className="row form-inline my-2 my-md-0">
                         <div className="col-sm d-flex p-2">
                             <input onChange={searchHandler} className="form-control mr-sm-2" type="search" placeholder="Search"></input>
                             <button className="btn btn-success my-2 my-sm-0 block" onClick={handleSearchByTitle}>Search</button>

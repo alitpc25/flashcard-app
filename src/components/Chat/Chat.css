@@ -17,6 +17,7 @@
 .messageDiv {
     overflow: auto;
     height: 560px;
+    background-color: rgba(101, 214, 230, 0.5);
 }
 
 .chatForm {
@@ -40,7 +41,7 @@
     color: rgb(247, 211, 52);
   }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
     .messageDiv {
         width: 100%;
         margin-top: 2rem;

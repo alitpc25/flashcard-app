@@ -51,7 +51,7 @@ export default function ChatMessaging(props) {
         <div>
             {!friendId ? null : <div className='container'>
                 <div className='row'>
-                    <div className="col-lg-12">
+                    <div className="col-md-12">
                         <div className='d-flex justify-content-end'>
                             <Formik
                                 initialValues={initialValues}

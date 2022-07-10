@@ -19,10 +19,15 @@
     margin-top: 1rem;
 }
 
+.fixedPosition {
+    position: fixed;
+}
+
 @media (max-width: 768px) {
+    .fixedPosition {
+        position:relative;
+    }
     .userCard {
         width: 100%;
-        margin-top: 2rem;
-        background-color: rgba(80, 221, 240, 0.5);
     }
 }

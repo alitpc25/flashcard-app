@@ -2,14 +2,7 @@
     margin-top: 2rem;
 }
 
-.fixedPosition {
-    position: fixed;
-}
-
 @media (max-width: 768px) {
-    .fixedPosition {
-        position:relative;
-    }
     .essayCard {
         width: 100%;
     }

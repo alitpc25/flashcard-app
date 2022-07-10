@@ -291,36 +291,36 @@ export default function User(props) {
         return (
             <div className='container'>
                 <div className="row">
-                    <div className="col-lg-4 mb-4">
+                    <div className="col-md-4 mb-4">
                         <div className="fixedPosition">
-                            <div className="card col-xs userCard">
+                            <div className="card col-md userCard">
                                 <img src={require("../../assets/img/avatarpng.png")} className="card-img-top image" alt="..."></img>
                                 <div className="card-body text-center">
                                     <h2 className="card-text">{userIdParam === user.id ? user.username : visitedUser.username} { }</h2>
                                 </div>
                             </div>
-                            <div className="card col-xs userCard">
+                            <div className="card col-md userCard">
                                 <div className="card-body text-center">
                                     <h5>Number of Words : {userIdParam === user.id ? wordsLength : visitedUserWordsLength} </h5>
                                     <h5>Score : {userIdParam === user.id ? user.score : visitedUser.score} </h5>
                                 </div>
                             </div>
-                            {(userIdParam !== user.id) && !isFriendshipAlreadyReceived && !isFriendshipAlreadyRequested && !isFriendshipExist ? <div className="card col-xs userCard">
+                            {(userIdParam !== user.id) && !isFriendshipAlreadyReceived && !isFriendshipAlreadyRequested && !isFriendshipExist ? <div className="card col-md userCard">
                                 <Button className='deleteButton' variant="light" onClick={handleSendFriendshipRequest}>
                                     Send friendship request
                                 </Button>
                             </div> : null}
-                            {(userIdParam !== user.id) && isFriendshipAlreadyReceived && !isFriendshipAlreadyRequested ? <div className="card col-xs userCard">
+                            {(userIdParam !== user.id) && isFriendshipAlreadyReceived && !isFriendshipAlreadyRequested ? <div className="card col-md userCard">
                                 <Button disabled className='deleteButton' variant="light" onClick={handleSendFriendshipRequest}>
                                     User already sent you a request.
                                 </Button>
                             </div> : null}
-                            {(userIdParam !== user.id) && !isFriendshipAlreadyReceived && isFriendshipAlreadyRequested ? <div className="card col-xs userCard">
+                            {(userIdParam !== user.id) && !isFriendshipAlreadyReceived && isFriendshipAlreadyRequested ? <div className="card col-md userCard">
                                 <Button disabled className='deleteButton' variant="light" onClick={handleSendFriendshipRequest}>
                                     Friendship request sent.
                                 </Button>
                             </div> : null}
-                            {userIdParam === user.id ? <div className="card col-xs userCard">
+                            {userIdParam === user.id ? <div className="card col-md userCard">
                                 <Button className='deleteButton' style={{ marginBottom: "7px" }} variant="warning" onClick={handleShowUpdate}>
                                     Change Credentials
                                 </Button>
@@ -331,7 +331,7 @@ export default function User(props) {
                         </div>
                     </div>
                     {user.id === userIdParam ? 
-                    <div className="col-lg-8 mb-4">
+                    <div className="col-md-8 mb-4">
                         <ul className="nav nav-pills nav-fill userPageTab">
                             <li className="nav-item">
                                 <a id='essays' className="nav-link active" href='' onClick={(e) => handleTabChange(e)}>Essays</a>
@@ -354,7 +354,7 @@ export default function User(props) {
                         (!userIdParam) ? (<div className="d-flex align-items-center justify-content-center">
                         <strong>Loading...</strong>
                         <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>) : <div className="col-lg-8 mb-4">
+                    </div>) : <div className="col-md-8 mb-4">
                     <Essay key={userIdParam} userId={user.id} userIdParam={userIdParam}></Essay>
                     </div>
                     )}

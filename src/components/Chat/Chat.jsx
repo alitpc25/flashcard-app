@@ -115,7 +115,6 @@ export default function Chat(props) {
     const connect = () => {
         let socket = new SockJS('http://localhost:4000/ws');
         stompClient = over(socket);
-        console.log(messageHistoryOfFriend)
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/notifications', function (notificationResponse) {
                 showNotificationResponse(JSON.parse(notificationResponse.body));
@@ -123,10 +122,16 @@ export default function Chat(props) {
         });
     }
 
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
     function showNotificationResponse(message) {
         if (message.userId != user.id && selectedFriendId.current == message.userId) {
-            setMessageHistoryOfFriend([...messageHistoryOfFriend, {id:message.id, sentAt:message.sentAt, text:message.text}])
-            allMessageHistory.current = [...allMessageHistory.current, {id:message.id, sentAt:message.sentAt, text:message.text}]
+            setMessageHistoryOfFriend([...messageHistoryOfFriend, {id:message.id, sentAt:message.sentAt, text:decodeHtml(message.text)}])
+            allMessageHistory.current = [...allMessageHistory.current, {id:message.id, sentAt:message.sentAt, text:decodeHtml(message.text)}]
         }
     }
 
@@ -151,7 +156,7 @@ export default function Chat(props) {
     return (
         <div className="container">
             <div className="row">
-                <div className="col-lg-4 mb-4">
+                <div className="col-md-4 mb-4">
                     {!friendships ? <div className="d-flex align-items-center justify-content-center">
                         <strong>Loading...</strong>
                         <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
@@ -162,7 +167,7 @@ export default function Chat(props) {
                         </ul>
                     </div>}
                 </div>
-                <div id="messageDiv" className="col-lg-8 mb-4 messageDiv">
+                <div id="messageDiv" className="col-md-8 mb-4 messageDiv">
                     {isAllDataFetched && messageHistoryOfFriend && messageHistoryOfUser && allMessageHistory.current ?
                         <div>
                             <div className='overflow-auto'>
