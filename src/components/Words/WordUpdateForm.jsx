@@ -39,7 +39,7 @@ export default function WordUpdateForm(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (res) {
-            toast.success(res.data.message, { toastProperties });
+            toast.success(res.data, { toastProperties });
             props.setIsWordsChanged(true);
             props.setIsUpdateWordClicked(false)
             

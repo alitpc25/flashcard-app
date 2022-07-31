@@ -79,7 +79,7 @@ export default function User(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (res) {
-            toast.success(res.data.message, { toastProperties });
+            toast.success(res.data, { toastProperties });
         })
             .catch(function (error) {
                 console.log(error);
@@ -102,7 +102,7 @@ export default function User(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (res) {
-            toast.success(res.data.message, { toastProperties });
+            toast.success(res.data, { toastProperties });
         })
             .catch(function (error) {
                 console.log(error);

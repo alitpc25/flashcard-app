@@ -45,7 +45,7 @@ export default function EssayInsert(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (response) {
-            toast.success(response.data.message, { toastProperties });
+            toast.success(response.data, { toastProperties });
             setIsEssaysChanged(true);
         }).catch(function (error) {
             toast.error(error.response, {

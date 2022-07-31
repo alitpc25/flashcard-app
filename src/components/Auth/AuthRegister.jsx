@@ -65,7 +65,7 @@ export default function Auth() {
             toast.info('Please verify your email via 6-digit code!', { toastProperties });
             navigate("/auth/register/confirm")
         }).catch(function (error) {
-            toast.error(error.response.data.message, {
+            toast.error(error.response.data, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,

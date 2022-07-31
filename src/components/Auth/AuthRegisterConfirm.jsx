@@ -59,7 +59,7 @@ export default function Auth() {
             }))
             navigate("/")
         }).catch(function (error) {
-            toast.error(error.response.data.message, {
+            toast.error(error.response.data, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
