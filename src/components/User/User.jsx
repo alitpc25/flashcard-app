@@ -35,7 +35,7 @@ export default function User(props) {
                 }
             })
                 .then(res => {
-                    setVisitedUser(res.data.data)
+                    setVisitedUser(res.data)
                 }).catch(error => {
                     console.log(error)
                     if (error.response.statusText === "Unauthorized") {
@@ -53,7 +53,7 @@ export default function User(props) {
                 }
             })
                 .then(res => {
-                    setVisitedUserWordsLength(res.data.data.length)
+                    setVisitedUserWordsLength(res.data.length)
                 }).catch(error => {
                     console.log(error)
                     if (error.response.statusText === "Unauthorized") {
@@ -163,7 +163,7 @@ export default function User(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setFriendships(res.data.data)
+                setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
                 if (error.response.statusText === "Unauthorized") {
@@ -182,7 +182,7 @@ export default function User(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setFriendshipRequests(res.data.data)
+                setFriendshipRequests(res.data)
             }).catch(error => {
                 console.log(error)
                 if (error.response.statusText === "Unauthorized") {

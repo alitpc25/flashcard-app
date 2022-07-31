@@ -58,9 +58,9 @@ export default function Essay(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setEssays(res.data.data.content)
-                setCurrentPage(res.data.data.number + 1)
-                setPageNumber(res.data.data.totalPages)
+                setEssays(res.data.content)
+                setCurrentPage(res.data.number + 1)
+                setPageNumber(res.data.totalPages)
             }).catch(error => {
                 console.log(error)
                 if (error.response.statusText === "Unauthorized") {
@@ -109,9 +109,9 @@ export default function Essay(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(res => {
-            setEssays(res.data.data.content)
-            setCurrentPage(res.data.data.number + 1)
-            setPageNumber(res.data.data.totalPages)
+            setEssays(res.data.content)
+            setCurrentPage(res.data.number + 1)
+            setPageNumber(res.data.totalPages)
         }).catch(error => {
             console.log(error)
             if (error.response.statusText === "Unauthorized") {

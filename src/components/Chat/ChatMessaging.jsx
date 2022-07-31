@@ -34,9 +34,9 @@ export default function ChatMessaging(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(function (response) {
-                setMessageHistoryOfUser([...messageHistoryOfUser, response.data.data])
-                allMessageHistory.current = [...allMessageHistory.current, response.data.data]
-                sendNotification(response.data.data)
+                setMessageHistoryOfUser([...messageHistoryOfUser, response.data])
+                allMessageHistory.current = [...allMessageHistory.current, response.data]
+                sendNotification(response.data)
                 setIsDataChanged(true)
             }).catch(function (error) {
                 console.log(error);

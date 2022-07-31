@@ -27,7 +27,7 @@ export default function Practice(props) {
       }
     })
       .then(res => {
-        setWords(res.data.data)
+        setWords(res.data)
         setIsLoaded(true)
         setRandomNum(Math.floor(Math.random() * 3))
       })

@@ -26,7 +26,7 @@ export default function Chat(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setFriendships(res.data.data)
+                setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
                 if (error.response.statusText === "Unauthorized") {
@@ -56,28 +56,28 @@ export default function Chat(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setChatData(res.data.data)
-                setChatId(res.data.data.id)
-                axios.get("chat/privateChat/messages/user?chatId=" + res.data.data.id + "&userId=" + user.id, {
+                setChatData(res.data)
+                setChatId(res.data.id)
+                axios.get("chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + user.id, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
                 }).then(res => {
-                    setMessageHistoryOfUser(res.data.data)
-                    allMessageHistory.current = (res.data.data)
+                    setMessageHistoryOfUser(res.data)
+                    allMessageHistory.current = (res.data)
                 }).catch(error => {
                     console.log(error)
                     if (error.response.statusText === "Unauthorized") {
                         RefreshTokenRequest()
                     }
                 }).then(() => {
-                    axios.get("chat/privateChat/messages/friend?chatId=" + res.data.data.id + "&friendId=" + friendId, {
+                    axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
                     }).then(res => {
-                        setMessageHistoryOfFriend(res.data.data)
-                        allMessageHistory.current = allMessageHistory.current.concat(res.data.data)
+                        setMessageHistoryOfFriend(res.data)
+                        allMessageHistory.current = allMessageHistory.current.concat(res.data)
                     }).catch(error => {
                         console.log(error)
                         if (error.response.statusText === "Unauthorized") {
@@ -130,8 +130,8 @@ export default function Chat(props) {
 
     function showNotificationResponse(message) {
         if (message.userId != user.id && selectedFriendId.current == message.userId) {
-            setMessageHistoryOfFriend([...messageHistoryOfFriend, {id:message.id, sentAt:message.sentAt, text:decodeHtml(message.text)}])
-            allMessageHistory.current = [...allMessageHistory.current, {id:message.id, sentAt:message.sentAt, text:decodeHtml(message.text)}]
+            setMessageHistoryOfFriend([...messageHistoryOfFriend, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
+            allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
         }
     }
 
@@ -141,6 +141,8 @@ export default function Chat(props) {
         }));
     }
 
+    const [isMounted, setIsMounted] = useState(false)
+
     useEffect(() => {
         if (myRef.current) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
@@ -148,44 +150,49 @@ export default function Chat(props) {
         if (stompClient == null && messageHistoryOfFriend) {
             connect()
         }
-        if (!friendships) {
+        if(!isMounted) {
             getFriendships();
+            setIsMounted(true)
         }
-    }, [friendships, isAllDataFetched, myRef.current, messageHistoryOfUser,messageHistoryOfFriend])
+    }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend])
 
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-md-4 mb-4">
-                    {!friendships ? <div className="d-flex align-items-center justify-content-center">
-                        <strong>Loading...</strong>
-                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div> : <div className="col-sm fixedPosition">
-                        <h1 className="display-4">Friends</h1>
-                        <ul className="list-group">
-                            {friendships.map(f => (<button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>))}
-                        </ul>
-                    </div>}
+    if (!friendships) {
+        return (<div className="d-flex align-items-center justify-content-center">
+            <strong>Loading...</strong>
+            <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>)
+    } else {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-4 mb-4">
+                        <div className="col-sm fixedPosition">
+                            <h1 className="display-4">Friends</h1>
+                            <ul className="list-group">
+                                {friendships.map(f => (<button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>))}
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="messageDiv" className="col-md-8 mb-4 messageDiv">
+                        {isAllDataFetched && messageHistoryOfFriend && messageHistoryOfUser && allMessageHistory.current ?
+                            <div>
+                                <div className='overflow-auto'>
+                                    {allMessageHistory.current.sort(function (x, y) {
+                                        return moment(x.sentAt).diff(y.sentAt);
+                                    }).map(message => (
+                                        messageHistoryOfUser.includes(message) ?
+                                            (<UserMessage message={message}></UserMessage>) :
+                                            (<FriendMessage chatData={chatData} user={user} message={message}></FriendMessage>)
+                                    )
+                                    )}
+                                    <div ref={myRef}></div>
+                                </div>
+                            </div> : null
+                        }
+                    </div>
+                    <ChatMessaging setMessageHistoryOfUser={setMessageHistoryOfUser} setMessageHistoryOfFriend={setMessageHistoryOfFriend} messageHistoryOfUser={messageHistoryOfUser} messageHistoryOfFriend={messageHistoryOfFriend} allMessageHistory={allMessageHistory} sendNotification={sendNotification} user={user} chatData={chatData} friendId={friendId}></ChatMessaging>
                 </div>
-                <div id="messageDiv" className="col-md-8 mb-4 messageDiv">
-                    {isAllDataFetched && messageHistoryOfFriend && messageHistoryOfUser && allMessageHistory.current ?
-                        <div>
-                            <div className='overflow-auto'>
-                                {allMessageHistory.current.sort(function (x, y) {
-                                    return moment(x.sentAt).diff(y.sentAt);
-                                }).map(message => (
-                                    messageHistoryOfUser.includes(message) ?
-                                        (<UserMessage message={message}></UserMessage>) :
-                                        (<FriendMessage chatData={chatData} user={user} message={message}></FriendMessage>)
-                                )
-                                )}
-                                <div ref={myRef}></div>
-                            </div>
-                        </div> : null
-                    }
-                </div>
-                <ChatMessaging setMessageHistoryOfUser={setMessageHistoryOfUser} setMessageHistoryOfFriend={setMessageHistoryOfFriend} messageHistoryOfUser={messageHistoryOfUser} messageHistoryOfFriend={messageHistoryOfFriend} allMessageHistory={allMessageHistory} sendNotification={sendNotification} user={user} chatData={chatData} friendId={friendId}></ChatMessaging>
             </div>
-        </div>
-    )
+        )
+    }
 }

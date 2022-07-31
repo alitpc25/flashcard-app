@@ -31,7 +31,7 @@ function User() {
     })
       .then(function (response) {
         setIsLoaded(true)
-        setUserList(response.data.data.sort(compare))
+        setUserList(response.data.sort(compare))
       })
       .catch(function (error) {
         setIsLoaded(true)

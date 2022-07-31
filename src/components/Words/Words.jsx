@@ -36,9 +36,9 @@ export default function Words(props) {
       })
         .then(res => {
           setIsLoaded(true)
-          setWords(res.data.data.content.sort((a, b) => a.id - b.id))
-          setCurrentPage(res.data.data.number+1)
-          setPageNumber(res.data.data.totalPages)
+          setWords(res.data.content.sort((a, b) => a.id - b.id))
+          setCurrentPage(res.data.number+1)
+          setPageNumber(res.data.totalPages)
           setIsAddWordClicked(false)
           setIsWordsChanged(false)
         })

@@ -37,7 +37,7 @@ export default function EssayPage(props) {
         }
       })
         .then(res => {
-          setEssay(res.data.data)
+          setEssay(res.data)
         }).catch(error => {
           console.log(error)
           if (error.response.statusText === "Unauthorized") {

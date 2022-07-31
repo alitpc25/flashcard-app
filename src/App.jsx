@@ -3,7 +3,6 @@ import Header from "./components/Header"
 import 'font-awesome/css/font-awesome.min.css';
 import "./assets/css/fonts.css"
 import {
-	BrowserRouter,
 	Routes,
 	Route,
 	Navigate
@@ -41,7 +40,7 @@ function App() {
 				}
 			})
 				.then(res => {
-					setUser(res.data.data)
+					setUser(res.data)
 				}).catch(error => {
 					console.log(error)
 					if (error.response.statusText === "Unauthorized") {
@@ -58,7 +57,7 @@ function App() {
 			}
 		})
 			.then(res => {
-				setWordsLength(res.data.data.length)
+				setWordsLength(res.data.length)
 			}).catch(error => {
 				console.log(error)
 				if (error.response.statusText === "Unauthorized") {
