@@ -5,7 +5,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
 import "./Friends.css"
 
 export default function Friends(props) {
-    const { user, friendships, userIdParam, friendshipRequests, setIsFriendComponentDatasChanged } = props
+    const { user, friendships, userIdParam, friendshipRequests, setIsFriendComponentDatasChanged, isFriendComponentDatasChanged } = props
 
     const handleFriendshipAccept = (e) => {
         if (e.target.id) {
@@ -38,7 +38,8 @@ export default function Friends(props) {
     }
 
     useEffect(() => {
-    }, [userIdParam])
+        setIsFriendComponentDatasChanged(false)
+    }, [userIdParam, isFriendComponentDatasChanged])
 
     return (
         <div className="container">

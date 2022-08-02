@@ -346,7 +346,7 @@ export default function User(props) {
                             <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
                         </div>) : <Essay key={userIdParam} userId={user.id} userIdParam={userIdParam}></Essay>
                         ) : (
-                            <Friends user={user} userIdParam={userIdParam} friendships={friendships} friendshipRequests={friendshipRequests} setIsFriendComponentDatasChanged={setIsFriendComponentDatasChanged}></Friends>
+                            <Friends user={user} userIdParam={userIdParam} friendships={friendships} friendshipRequests={friendshipRequests} setIsFriendComponentDatasChanged={setIsFriendComponentDatasChanged} isFriendComponentDatasChanged={isFriendComponentDatasChanged}></Friends>
                         ) 
                         }
                     </div>

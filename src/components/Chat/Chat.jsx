@@ -141,18 +141,13 @@ export default function Chat(props) {
         }));
     }
 
-    const [isMounted, setIsMounted] = useState(false)
-
     useEffect(() => {
+        getFriendships();
         if (myRef.current) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
         }
         if (stompClient == null && messageHistoryOfFriend) {
             connect()
-        }
-        if(!isMounted) {
-            getFriendships();
-            setIsMounted(true)
         }
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend])
 
