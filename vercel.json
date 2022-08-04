@@ -4,5 +4,12 @@
             "source": "/:path*",
             "destination": "https://vocabuilder.herokuapp.com/:path*"
         }
+    ],
+    "redirects": [
+        {
+          "source": "/:path*",
+          "destination": "/:path*",
+          "permanent": true
+        }
     ]
 }
