@@ -102,10 +102,25 @@ export default function User(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (res) {
-            toast.success(res.data, { toastProperties });
-        })
-            .catch(function (error) {
-                console.log(error);
+            toast.success('Password successfully changed.', {
+                position: "top-right",
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+        }).catch(function (error) {
+            toast.error('Old password is incorrect.', {
+                position: "top-right",
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
             });
         handleCloseUpdate();
     }

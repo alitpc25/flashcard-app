@@ -46,20 +46,6 @@ export default function Practice(props) {
 
   useEffect(() => {
     user.score = correctAnswerNumber.current
-    axios.put(`/users/updateScoreByUserId/`+localStorage.getItem("currentUserId"),{
-      score: correctAnswerNumber.current
-    }, {
-      headers: {
-        Authorization: localStorage.getItem("tokenKey")
-      }
-    }).then(function (res) {
-    })
-      .catch(function (error) {
-        console.log(error);
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
-      });
   }
   ,[correctAnswerNumber.current])
 
@@ -70,6 +56,7 @@ export default function Practice(props) {
   }
 
   const handleClick = (e) => {
+    var isAnswerCorrect = false;
     for (let i = 0; i < words.length; i++) {
       let elem = document.getElementById(i)
       elem.style.opacity = 1
@@ -77,10 +64,27 @@ export default function Practice(props) {
         elem.style.background = "#42f560"
         if (i === parseInt(e.target.id)) {
           correctAnswerNumber.current += 1
+          isAnswerCorrect=true
         }
       } else {
         elem.style.background = "#f54242"
       }
+    }
+    if(isAnswerCorrect) {
+      axios.put(`/users/updateScoreByUserId/`+localStorage.getItem("currentUserId"),{
+        score: correctAnswerNumber.current
+      }, {
+        headers: {
+          Authorization: localStorage.getItem("tokenKey")
+        }
+      }).then(function (res) {
+      })
+        .catch(function (error) {
+          console.log(error);
+            if(error.response.statusText === "Unauthorized") {
+              RefreshTokenRequest()
+            }
+        });
     }
     setIsAnswered(true);
   }
