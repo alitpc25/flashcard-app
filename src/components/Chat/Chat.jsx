@@ -113,7 +113,7 @@ export default function Chat(props) {
 
     //Websocket.
     const connect = () => {
-        let socket = new SockJS('http://localhost:4000/ws');
+        let socket = new SockJS('https://localhost:4000/ws');
         stompClient = over(socket);
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/notifications', function (notificationResponse) {
