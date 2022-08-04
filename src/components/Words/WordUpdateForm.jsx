@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import {toast} from "react-toastify"
 import {RefreshTokenRequest} from "../../services/HttpService"
+import "./WordAddUpdateForms.css"
 
 export default function WordUpdateForm(props) {
 
@@ -52,8 +53,8 @@ export default function WordUpdateForm(props) {
     }
 
     return (
-        <tr>
-            <th scope="row" ></th>
+        <tr className='addUpdateTableRow'>
+            <td scope="row" ></td>
             <td><input defaultValue={word.turkishWord} onChange={handleTurkishWordChange}></input></td>
             <td><input defaultValue={word.englishWord} onChange={handleEnglishWordChange}></input></td>
             <td><button type="button" className="btn btn-success button" style={{ fontSize: "0.9rem" }} onClick={() => handleUpdate(word.id)}>Update</button></td>

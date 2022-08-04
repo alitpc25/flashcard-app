@@ -1,0 +1,5 @@
+@media (max-width: 768px) {
+    .addUpdateTableRow td input{
+        width: 100%;
+    }
+}

@@ -2,6 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import { useState } from 'react';
 import {RefreshTokenRequest} from "../../services/HttpService"
+import "./WordAddUpdateForms.css"
 
 export default function WordAddForm(props) {
 
@@ -37,8 +38,8 @@ export default function WordAddForm(props) {
     }
 
     return (
-        <tr>
-            <th scope="row" ></th>
+        <tr className='addUpdateTableRow'>
+            <td scope="row" ></td>
             <td><input onChange={handleTurkishWordChange}></input></td>
             <td><input onChange={handleEnglishWordChange}></input></td>
             <td><button type="button" className="btn btn-success button" style={{ fontSize: "0.9rem" }} onClick={handleSubmit}>Submit</button></td>
