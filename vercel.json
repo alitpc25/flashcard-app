@@ -4,7 +4,5 @@
             "source": "/:path*",
             "destination": "https://vocabuilder.herokuapp.com/:path*"
         }
-    ],
-    "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
-
+    ]
 }
