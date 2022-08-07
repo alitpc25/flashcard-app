@@ -71,8 +71,10 @@ function App() {
 	}, [userReducer.currentUserId])
 
 	useEffect(() => {
-		getAllWordsRequest()
-		getUserRequest()
+		if(userReducer.userLoggedIn) {
+			getAllWordsRequest()
+			getUserRequest()
+		}
 	}, [wordsLength, currentUserId])
 
 	return (
