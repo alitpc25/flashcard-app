@@ -103,7 +103,6 @@ export default function Essay(props) {
 
     const handleSearchByTitle = (e) => {
         e.preventDefault()
-        console.log("ads")
         axios.get("/essays/searchByTitle?pageSize=" + essaysPerPage + "&page=" + currentPage + "&userId=" + userIdParam + "&title=" + searchText, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
