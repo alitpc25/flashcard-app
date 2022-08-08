@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from "axios"
 
 import moment from 'moment'
-import { RefreshTokenRequest } from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
 import "./Chat.css"
 import ChatMessaging from "./ChatMessaging"
+import { useSelector } from 'react-redux'
 
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
@@ -14,6 +15,8 @@ import FriendMessage from "./FriendMessage.jsx"
 var stompClient = null;
 
 export default function Chat(props) {
+
+    const userReducer = useSelector((state) => state.userReducer)
 
     const { user } = props;
 
@@ -29,7 +32,8 @@ export default function Chat(props) {
                 setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -67,9 +71,10 @@ export default function Chat(props) {
                     allMessageHistory.current = (res.data)
                 }).catch(error => {
                     console.log(error)
-                    if (error.response.statusText === "Unauthorized") {
-                        RefreshTokenRequest()
-                    }
+					if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+						AccessTokenRequest(userReducer.currentUserId)
+						RefreshTokenRequest()
+					}
                 }).then(() => {
                     axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
                         headers: {
@@ -80,7 +85,8 @@ export default function Chat(props) {
                         allMessageHistory.current = allMessageHistory.current.concat(res.data)
                     }).catch(error => {
                         console.log(error)
-                        if (error.response.statusText === "Unauthorized") {
+                        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                            AccessTokenRequest(userReducer.currentUserId)
                             RefreshTokenRequest()
                         }
                     })
@@ -94,7 +100,8 @@ export default function Chat(props) {
                 })
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })

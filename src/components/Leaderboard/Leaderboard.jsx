@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../FlashCard/FlashCard.css"
 import { Link } from "react-router-dom"
-import {RefreshTokenRequest} from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 const axios = require('axios');
 
 
 function User() {
+
+  const userReducer = useSelector((state) => state.userReducer)
 
   const [isLoaded, setIsLoaded] = useState(false)
   const [userList, setUserList] = useState([])
@@ -36,9 +39,10 @@ function User() {
       .catch(function (error) {
         setIsLoaded(true)
         console.log(error)
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+          AccessTokenRequest(userReducer.currentUserId)
+          RefreshTokenRequest()
+      }
       })
   }, [])
 

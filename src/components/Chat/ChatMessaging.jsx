@@ -2,8 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from "axios"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 
 export default function ChatMessaging(props) {
+
+    const userReducer = useSelector((state) => state.userReducer)
 
     const {user, chatData, friendId, sendNotification, messageHistoryOfUser, allMessageHistory, setMessageHistoryOfUser} = props;
 
@@ -40,6 +44,10 @@ export default function ChatMessaging(props) {
                 setIsDataChanged(true)
             }).catch(function (error) {
                 console.log(error);
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
+                    RefreshTokenRequest()
+                }
             })
         setIsDataChanged(false)
     }

@@ -2,10 +2,12 @@ import axios from 'axios'
 import React from 'react'
 import { useState } from 'react';
 import {toast} from "react-toastify"
-import {RefreshTokenRequest} from "../../services/HttpService"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import "./WordAddUpdateForms.css"
 
 export default function WordUpdateForm(props) {
+    const userReducer = useSelector((state) => state.userReducer)
 
     const {word} = props;
 
@@ -46,9 +48,10 @@ export default function WordUpdateForm(props) {
             
         }).catch(function (error) {
             console.log(error)
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
         });
     }
 

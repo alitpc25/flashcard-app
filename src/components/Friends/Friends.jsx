@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from "axios"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import "./Friends.css"
 
 export default function Friends(props) {
+    const userReducer = useSelector((state) => state.userReducer)
     const { user, friendships, userIdParam, friendshipRequests, setIsFriendComponentDatasChanged, isFriendComponentDatasChanged } = props
 
     const handleFriendshipAccept = (e) => {
@@ -17,6 +20,10 @@ export default function Friends(props) {
                 }).then(function (response) {
                 }).catch(function (error) {
                     console.log(error);
+                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
                 })
             setIsFriendComponentDatasChanged(true)
         }
@@ -32,6 +39,10 @@ export default function Friends(props) {
                 }).then(function (response) {
                 }).catch(function (error) {
                     console.log(error);
+                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
                 })
             setIsFriendComponentDatasChanged(true)
         }

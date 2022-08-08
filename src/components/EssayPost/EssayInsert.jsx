@@ -3,11 +3,13 @@ import { useState } from 'react'
 import "./Essay.css"
 import axios from "axios"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { RefreshTokenRequest } from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
 
 export default function EssayInsert(props) {
+    const userReducer = useSelector((state) => state.userReducer)
 
     const { userId, setIsEssaysChanged } = props;
 
@@ -58,6 +60,10 @@ export default function EssayInsert(props) {
                 progress: undefined,
             });
             console.log(error);
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
         });
     }
 

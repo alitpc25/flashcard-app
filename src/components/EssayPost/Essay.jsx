@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import "./Essay.css"
 import axios from "axios"
-import { RefreshTokenRequest } from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import EssayInsert from './EssayInsert';
 import PaginationNav from '../PaginationNav/PaginationNav';
 
 export default function Essay(props) {
+    const userReducer = useSelector((state) => state.userReducer)
 
     const { userId, userIdParam } = props;
 
@@ -63,7 +65,8 @@ export default function Essay(props) {
                 setPageNumber(res.data.totalPages)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -95,7 +98,8 @@ export default function Essay(props) {
                 setIsEssaysChanged(true)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -113,7 +117,8 @@ export default function Essay(props) {
             setPageNumber(res.data.totalPages)
         }).catch(error => {
             console.log(error)
-            if (error.response.statusText === "Unauthorized") {
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }
         })

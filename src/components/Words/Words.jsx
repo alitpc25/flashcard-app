@@ -4,10 +4,11 @@ import PaginationNav from '../PaginationNav/PaginationNav';
 import WordAddForm from './WordAddForm';
 import "./Words.css"
 import WordUpdateForm from './WordUpdateForm';
-import {RefreshTokenRequest} from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 
 export default function Words(props) {
-
+  const userReducer = useSelector((state) => state.userReducer)
   const {currentUserId, getAllWordsRequest} = props;
 
   let index = 1;
@@ -45,9 +46,10 @@ export default function Words(props) {
         .catch(error => {
           setIsLoaded(true)
           console.log(error)
-            if(error.response.statusText === "Unauthorized") {
-              RefreshTokenRequest()
-            }
+          if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            AccessTokenRequest(userReducer.currentUserId)
+            RefreshTokenRequest()
+        }
         })
   }
 
@@ -71,9 +73,10 @@ export default function Words(props) {
         setIsAddWordClicked(false)
       }).catch(error => {
         console.log(error)
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+          AccessTokenRequest(userReducer.currentUserId)
+          RefreshTokenRequest()
+      }
       })
   }
 

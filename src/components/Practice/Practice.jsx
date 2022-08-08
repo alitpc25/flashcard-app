@@ -7,9 +7,11 @@ import { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import { useRef } from 'react'
-import {RefreshTokenRequest} from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 
 export default function Practice(props) {
+  const userReducer = useSelector((state) => state.userReducer)
 
   const [words, setWords] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
@@ -34,9 +36,10 @@ export default function Practice(props) {
       .catch(error => {
         setIsLoaded(true)
         console.log(error)
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+          AccessTokenRequest(userReducer.currentUserId)
+          RefreshTokenRequest()
+      }
       })
   }
 
@@ -81,9 +84,10 @@ export default function Practice(props) {
       })
         .catch(function (error) {
           console.log(error);
-            if(error.response.statusText === "Unauthorized") {
-              RefreshTokenRequest()
-            }
+          if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            AccessTokenRequest(userReducer.currentUserId)
+            RefreshTokenRequest()
+        }
         });
     }
     setIsAnswered(true);

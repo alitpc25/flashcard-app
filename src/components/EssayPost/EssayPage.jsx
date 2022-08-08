@@ -2,13 +2,16 @@ import axios from 'axios';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom"
-import { RefreshTokenRequest } from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import "./EssayPage.css"
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 export default function EssayPage(props) {
+
+  const userReducer = useSelector((state) => state.userReducer)
 
   const currentUserId = props.user.id
 
@@ -40,9 +43,10 @@ export default function EssayPage(props) {
           setEssay(res.data)
         }).catch(error => {
           console.log(error)
-          if (error.response.statusText === "Unauthorized") {
-            RefreshTokenRequest()
-          }
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
         })
     }
   }
@@ -89,9 +93,10 @@ export default function EssayPage(props) {
       navigate("/profile?userId=" + userIdParam, { replace: true });
     }).catch(function (error) {
       console.log(error)
-      if (error.response.statusText === "Unauthorized") {
+      if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+        AccessTokenRequest(userReducer.currentUserId)
         RefreshTokenRequest()
-      }
+    }
     });
   }
 

@@ -1,10 +1,12 @@
 import axios from 'axios'
 import React from 'react'
 import { useState } from 'react';
-import {RefreshTokenRequest} from "../../services/HttpService"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import "./WordAddUpdateForms.css"
 
 export default function WordAddForm(props) {
+    const userReducer = useSelector((state) => state.userReducer)
 
     const [englishWordInput, setEnglishWordInput] = useState("");
     const [turkishWordInput, setTurkishWordInput] = useState("");
@@ -31,9 +33,10 @@ export default function WordAddForm(props) {
             document.getElementById("addButton").style.visibility="visible";
         }).catch(function (error) {
             console.log(error);
-					if(error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
         });
     }
 

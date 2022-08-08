@@ -7,10 +7,12 @@ import * as Yup from 'yup';
 import { toast } from "react-toastify"
 import { useLocation } from "react-router-dom";
 import Essay from '../EssayPost/Essay';
-import { RefreshTokenRequest } from "../../services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpService.js"
+import { useSelector } from 'react-redux'
 import Friends from '../Friends/Friends';
 
 export default function User(props) {
+    const userReducer = useSelector((state) => state.userReducer)
 
     const { user, wordsLength } = props;
 
@@ -38,9 +40,10 @@ export default function User(props) {
                     setVisitedUser(res.data)
                 }).catch(error => {
                     console.log(error)
-                    if (error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
                 })
         }
     }
@@ -56,9 +59,10 @@ export default function User(props) {
                     setVisitedUserWordsLength(res.data.length)
                 }).catch(error => {
                     console.log(error)
-                    if (error.response.statusText === "Unauthorized") {
-						RefreshTokenRequest()
-					}
+                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
                 })
         }
     }
@@ -80,9 +84,12 @@ export default function User(props) {
             }
         }).then(function (res) {
             toast.success(res.data, { toastProperties });
-        })
-            .catch(function (error) {
+        }).catch(function (error) {
                 console.log(error);
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
+                    RefreshTokenRequest()
+                }
             });
     };
 
@@ -121,6 +128,10 @@ export default function User(props) {
                 draggable: true,
                 progress: undefined,
               });
+              if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
             });
         handleCloseUpdate();
     }
@@ -166,6 +177,10 @@ export default function User(props) {
               });
         }).catch(error => {
             console.log(error)
+            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
         })
     }
 
@@ -181,7 +196,8 @@ export default function User(props) {
                 setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -200,7 +216,8 @@ export default function User(props) {
                 setFriendshipRequests(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -219,7 +236,8 @@ export default function User(props) {
                 setIsFriendshipAlreadyRequested(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -238,7 +256,8 @@ export default function User(props) {
                 setIsFriendshipAlreadyReceived(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })
@@ -257,7 +276,8 @@ export default function User(props) {
                 setIsFriendshipExist(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized") {
+                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
             })

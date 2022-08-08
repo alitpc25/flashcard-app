@@ -17,7 +17,7 @@ import axios from "axios"
 import AuthRegister from "./components/Auth/AuthRegister";
 import AuthLogin from "./components/Auth/AuthLogin";
 import AuthRegisterConfirm from "./components/Auth/AuthRegisterConfirm";
-import { RefreshTokenRequest } from "./services/HttpService.js"
+import { RefreshTokenRequest, AccessTokenRequest } from "./services/HttpService.js"
 import { useSelector } from 'react-redux'
 import User from "./components/User/User";
 import EssayPage from "./components/EssayPost/EssayPage";
@@ -43,7 +43,8 @@ function App() {
 					setUser(res.data)
 				}).catch(error => {
 					console.log(error)
-					if (error.response.statusText === "Unauthorized") {
+					if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+						AccessTokenRequest(currentUserId)
 						RefreshTokenRequest()
 					}
 				})
@@ -60,7 +61,8 @@ function App() {
 				setWordsLength(res.data.length)
 			}).catch(error => {
 				console.log(error)
-				if (error.response.statusText === "Unauthorized") {
+				if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+					AccessTokenRequest(currentUserId)
 					RefreshTokenRequest()
 				}
 			})
