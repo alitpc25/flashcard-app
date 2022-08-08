@@ -144,7 +144,7 @@ export default function Chat(props) {
     }
 
     function sendNotification(messageInfo) {
-        stompClient.send("/app/notify", {}, JSON.stringify({
+        stompClient.send("/app/chat", {}, JSON.stringify({
             ...messageInfo, 'userId': user.id, 'friendId': friendId
         }));
     }
