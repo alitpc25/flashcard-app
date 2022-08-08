@@ -43,7 +43,7 @@ export default function EssayPage(props) {
           setEssay(res.data)
         }).catch(error => {
           console.log(error)
-            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            if (error.response.status === 401 && userReducer.userLoggedIn) {
                 AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }
@@ -93,7 +93,7 @@ export default function EssayPage(props) {
       navigate("/profile?userId=" + userIdParam, { replace: true });
     }).catch(function (error) {
       console.log(error)
-      if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+      if (error.response.status === 401 && userReducer.userLoggedIn) {
         AccessTokenRequest(userReducer.currentUserId)
         RefreshTokenRequest()
     }

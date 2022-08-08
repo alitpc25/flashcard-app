@@ -36,7 +36,7 @@ export default function Practice(props) {
       .catch(error => {
         setIsLoaded(true)
         console.log(error)
-        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+        if (error.response.status === 401 && userReducer.userLoggedIn) {
           AccessTokenRequest(userReducer.currentUserId)
           RefreshTokenRequest()
       }
@@ -84,7 +84,7 @@ export default function Practice(props) {
       })
         .catch(function (error) {
           console.log(error);
-          if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+          if (error.response.status === 401 && userReducer.userLoggedIn) {
             AccessTokenRequest(userReducer.currentUserId)
             RefreshTokenRequest()
         }

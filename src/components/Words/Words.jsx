@@ -46,7 +46,7 @@ export default function Words(props) {
         .catch(error => {
           setIsLoaded(true)
           console.log(error)
-          if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+          if (error.response.status === 401 && userReducer.userLoggedIn) {
             AccessTokenRequest(userReducer.currentUserId)
             RefreshTokenRequest()
         }
@@ -73,7 +73,7 @@ export default function Words(props) {
         setIsAddWordClicked(false)
       }).catch(error => {
         console.log(error)
-        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+        if (error.response.status === 401 && userReducer.userLoggedIn) {
           AccessTokenRequest(userReducer.currentUserId)
           RefreshTokenRequest()
       }

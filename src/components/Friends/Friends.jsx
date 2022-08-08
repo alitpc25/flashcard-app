@@ -20,7 +20,7 @@ export default function Friends(props) {
                 }).then(function (response) {
                 }).catch(function (error) {
                     console.log(error);
-                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
                         AccessTokenRequest(userReducer.currentUserId)
                         RefreshTokenRequest()
                     }
@@ -39,7 +39,7 @@ export default function Friends(props) {
                 }).then(function (response) {
                 }).catch(function (error) {
                     console.log(error);
-                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
                         AccessTokenRequest(userReducer.currentUserId)
                         RefreshTokenRequest()
                     }

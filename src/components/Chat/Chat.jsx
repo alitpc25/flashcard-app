@@ -32,7 +32,7 @@ export default function Chat(props) {
                 setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -71,7 +71,7 @@ export default function Chat(props) {
                     allMessageHistory.current = (res.data)
                 }).catch(error => {
                     console.log(error)
-					if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+					if (error.response.status === 401 && userReducer.userLoggedIn) {
 						AccessTokenRequest(userReducer.currentUserId)
 						RefreshTokenRequest()
 					}
@@ -85,7 +85,7 @@ export default function Chat(props) {
                         allMessageHistory.current = allMessageHistory.current.concat(res.data)
                     }).catch(error => {
                         console.log(error)
-                        if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                        if (error.response.status === 401 && userReducer.userLoggedIn) {
                             AccessTokenRequest(userReducer.currentUserId)
                             RefreshTokenRequest()
                         }
@@ -100,7 +100,7 @@ export default function Chat(props) {
                 })
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }

@@ -40,7 +40,7 @@ export default function User(props) {
                     setVisitedUser(res.data)
                 }).catch(error => {
                     console.log(error)
-                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
                         AccessTokenRequest(userReducer.currentUserId)
                         RefreshTokenRequest()
                     }
@@ -59,7 +59,7 @@ export default function User(props) {
                     setVisitedUserWordsLength(res.data.length)
                 }).catch(error => {
                     console.log(error)
-                    if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
                         AccessTokenRequest(userReducer.currentUserId)
                         RefreshTokenRequest()
                     }
@@ -86,7 +86,7 @@ export default function User(props) {
             toast.success(res.data, { toastProperties });
         }).catch(function (error) {
                 console.log(error);
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -128,7 +128,7 @@ export default function User(props) {
                 draggable: true,
                 progress: undefined,
               });
-              if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+              if (error.response.status === 401 && userReducer.userLoggedIn) {
                 AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }
@@ -177,7 +177,7 @@ export default function User(props) {
               });
         }).catch(error => {
             console.log(error)
-            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            if (error.response.status === 401 && userReducer.userLoggedIn) {
                 AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }
@@ -196,7 +196,7 @@ export default function User(props) {
                 setFriendships(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -216,7 +216,7 @@ export default function User(props) {
                 setFriendshipRequests(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -236,7 +236,7 @@ export default function User(props) {
                 setIsFriendshipAlreadyRequested(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -256,7 +256,7 @@ export default function User(props) {
                 setIsFriendshipAlreadyReceived(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -276,7 +276,7 @@ export default function User(props) {
                 setIsFriendshipExist(res.data)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }

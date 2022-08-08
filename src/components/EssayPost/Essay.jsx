@@ -65,7 +65,7 @@ export default function Essay(props) {
                 setPageNumber(res.data.totalPages)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -98,7 +98,7 @@ export default function Essay(props) {
                 setIsEssaysChanged(true)
             }).catch(error => {
                 console.log(error)
-                if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
                     AccessTokenRequest(userReducer.currentUserId)
                     RefreshTokenRequest()
                 }
@@ -117,7 +117,7 @@ export default function Essay(props) {
             setPageNumber(res.data.totalPages)
         }).catch(error => {
             console.log(error)
-            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            if (error.response.status === 401 && userReducer.userLoggedIn) {
                 AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }

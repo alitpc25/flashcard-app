@@ -33,7 +33,7 @@ export default function WordAddForm(props) {
             document.getElementById("addButton").style.visibility="visible";
         }).catch(function (error) {
             console.log(error);
-            if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+            if (error.response.status === 401 && userReducer.userLoggedIn) {
                 AccessTokenRequest(userReducer.currentUserId)
                 RefreshTokenRequest()
             }

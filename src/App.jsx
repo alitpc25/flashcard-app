@@ -43,7 +43,7 @@ function App() {
 					setUser(res.data)
 				}).catch(error => {
 					console.log(error)
-					if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+					if (error.response.status === 401 && userReducer.userLoggedIn) {
 						AccessTokenRequest(currentUserId)
 						RefreshTokenRequest()
 					}
@@ -61,7 +61,7 @@ function App() {
 				setWordsLength(res.data.length)
 			}).catch(error => {
 				console.log(error)
-				if (error.response.statusText === "Unauthorized" && userReducer.userLoggedIn) {
+				if (error.response.status === 401 && userReducer.userLoggedIn) {
 					AccessTokenRequest(currentUserId)
 					RefreshTokenRequest()
 				}
