@@ -122,7 +122,7 @@ export default function Chat(props) {
     const connect = () => {
         let socket = new SockJS('/chat');
         stompClient = over(socket);
-        stompClient.debug = function (){};//do nothing
+        //stompClient.debug = function (){};//do nothing
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/messages', function (notificationResponse) {
                 showNotificationResponse(JSON.parse(notificationResponse.body));
