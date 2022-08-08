@@ -120,11 +120,11 @@ export default function Chat(props) {
 
     //Websocket.
     const connect = () => {
-        let socket = new SockJS('https://vocabuilder.herokuapp.com/ws');
+        let socket = new SockJS('/chat');
         stompClient = over(socket);
         stompClient.debug = function (){};//do nothing
         stompClient.connect({}, function () {
-            stompClient.subscribe('/topic/notifications', function (notificationResponse) {
+            stompClient.subscribe('/topic/messages', function (notificationResponse) {
                 showNotificationResponse(JSON.parse(notificationResponse.body));
             });
         });
