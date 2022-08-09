@@ -24,8 +24,8 @@ export default function Chat(props) {
     const [friendships, setFriendships] = useState(null);
 
     const getFriendships = () => {
-        if (user.id) {
-            axios.get("/friends?userId=" + user.id, {
+        if (userReducer.currentUserId) {
+            axios.get("/friends?userId=" + userReducer.currentUserId, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -55,15 +55,15 @@ export default function Chat(props) {
 
     const getMessagesAndChat = (friendId) => {
         setFriendId(friendId);
-        if (user.id && friendId) {
+        if (userReducer.currentUserId && friendId) {
             //User chat data
-            axios.get("/chat/privateChat/toUser?userId=" + user.id + "&friendId=" + friendId, {
+            axios.get("/chat/privateChat/toUser?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
                 setUserChatData(res.data)
-                axios.get("chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + user.id, {
+                axios.get("chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + userReducer.currentUserId, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
@@ -79,7 +79,7 @@ export default function Chat(props) {
                 })
             }).then(() => {
                 //Friend chat data
-                axios.get("/chat/privateChat/toFriend?userId=" + user.id + "&friendId=" + friendId, {
+                axios.get("/chat/privateChat/toFriend?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
@@ -183,7 +183,7 @@ export default function Chat(props) {
     }
 
     function showNotificationResponse(message) {
-        if (message.userId != user.id && selectedFriendId.current == message.userId) {
+        if (message.userId != userReducer.currentUserId && selectedFriendId.current == message.userId) {
             setMessageHistoryOfFriend([...messageHistoryOfFriend, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
             allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
         }
@@ -191,7 +191,7 @@ export default function Chat(props) {
 
     function sendNotification(messageInfo) {
         stompClient.send("/app/chat", {}, JSON.stringify({
-            ...messageInfo, 'userId': user.id, 'friendId': friendId
+            ...messageInfo, 'userId': userReducer.currentUserId, 'friendId': friendId
         }));
     }
 

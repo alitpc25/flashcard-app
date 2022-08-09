@@ -78,7 +78,7 @@ export default function User(props) {
     }
 
     const deleteAccountRequest = () => {
-        axios.delete("/users/" + user.id, {
+        axios.delete("/users/" + userReducer.currentUserId, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }
@@ -100,7 +100,7 @@ export default function User(props) {
     }
 
     const handleUpdateRequest = (values) => {
-        axios.put("/users/" + user.id, {
+        axios.put("/users/" + userReducer.currentUserId, {
             username: values.username,
             oldPassword: values.oldPassword,
             newPassword: values.newPassword
@@ -160,7 +160,7 @@ export default function User(props) {
     });
 
     const handleSendFriendshipRequest = () => {
-        axios.get("/friends/addFriend?userId=" + user.id + "&friendId=" + userIdParam, {
+        axios.get("/friends/addFriend?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }
@@ -227,8 +227,8 @@ export default function User(props) {
     const [isFriendshipAlreadyRequested, setIsFriendshipAlreadyRequested] = useState(false)
 
     const getIsFriendshipAlreadyRequested = () => {
-        if (userIdParam && user.id) {
-            axios.get("/friends/isFriendshipAlreadyRequested?userId=" + user.id + "&friendId=" + userIdParam, {
+        if (userIdParam && userReducer.currentUserId) {
+            axios.get("/friends/isFriendshipAlreadyRequested?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -247,8 +247,8 @@ export default function User(props) {
     const [isFriendshipAlreadyReceived, setIsFriendshipAlreadyReceived] = useState(false)
 
     const getIsFriendshipAlreadyReceived = () => {
-        if (userIdParam && user.id) {
-            axios.get("/friends/isFriendshipAlreadyReceived?userId=" + user.id + "&friendId=" + userIdParam, {
+        if (userIdParam && userReducer.currentUserId) {
+            axios.get("/friends/isFriendshipAlreadyReceived?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -267,8 +267,8 @@ export default function User(props) {
     const [isFriendshipExist, setIsFriendshipExist] = useState(false)
 
     const getIsFriendshipExist = () => {
-        if (userIdParam && user.id) {
-            axios.get("/friends/isFriendshipExist?userId=" + user.id + "&friendId=" + userIdParam, {
+        if (userIdParam && userReducer.currentUserId) {
+            axios.get("/friends/isFriendshipExist?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -284,12 +284,30 @@ export default function User(props) {
         }
     }
 
+    const handleEndFriendship = () => {
+        if(userIdParam) {
+            axios.delete("/friends?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+                headers: {
+                    Authorization: localStorage.getItem("tokenKey")
+                }
+            }).then(function (res) {
+                toast.success("Friendship successfully ended.", { toastProperties });
+            }).catch(function (error) {
+                    console.log(error);
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
+                });
+        }
+    }
+
     const [isFriendComponentDatasChanged, setIsFriendComponentDatasChanged] = useState(false);
 
     useEffect(() => {
         getFriendships()
         getFriendshipRequests()
-        if (userIdParam !== user.id) {
+        if (userIdParam !== userReducer.currentUserId) {
             getForeignUserRequest()
             getAllWordsOfForeignUserRequest()
             getIsFriendshipAlreadyRequested()
@@ -353,6 +371,11 @@ export default function User(props) {
                             {(userIdParam !== user.id) && !isFriendshipAlreadyReceived && isFriendshipAlreadyRequested ? <div className="card col-md userCard">
                                 <Button disabled className='deleteButton' variant="light" onClick={handleSendFriendshipRequest}>
                                     Friendship request sent.
+                                </Button>
+                            </div> : null}
+                            {(userIdParam !== user.id) && isFriendshipExist ? <div className="card col-md userCard">
+                                <Button className='deleteButton' variant="danger" onClick={handleEndFriendship}>
+                                    End the friendship.
                                 </Button>
                             </div> : null}
                             {userIdParam === user.id ? <div className="card col-md userCard">
