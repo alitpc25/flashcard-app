@@ -39,7 +39,15 @@
 .friendSelectButton:focus  {
     font-weight: bold;
     color: rgb(247, 211, 52);
-  }
+}
+
+.chatButtonDiv {
+    display: flex;
+    margin: auto;
+    justify-content: space-evenly;
+    align-items:center;
+    margin-top: 0.5rem;
+}
 
 @media (max-width: 768px) {
     .messageDiv {

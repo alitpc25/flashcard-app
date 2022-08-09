@@ -82,7 +82,7 @@ export default function ChatMessaging(props) {
                                                 <ErrorMessage name="text" component="div" />
                                             </div>
                                             <button type="submit" className='btn btn-info' >
-                                                Send
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                     </Form>

@@ -45,7 +45,7 @@ export default function WordAddForm(props) {
             <td scope="row" ></td>
             <td><input onChange={handleTurkishWordChange}></input></td>
             <td><input onChange={handleEnglishWordChange}></input></td>
-            <td><button type="button" className="btn btn-success button" style={{ fontSize: "0.9rem" }} onClick={handleSubmit}>Submit</button></td>
+            <td><button type="button" className="btn btn-success button" style={{ fontSize: "0.9rem" }} onClick={handleSubmit}><i class="fa fa-paper-plane" aria-hidden="true"></i></button></td>
         </tr>
     )
 }

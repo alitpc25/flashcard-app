@@ -113,7 +113,7 @@ export default function Practice(props) {
 
           <h3 className="d-flex align-items-center justify-content-center">Score: {correctAnswerNumber.current}</h3>
           <FlashCard isAnswered={isAnswered} word={words[randomNum]}></FlashCard>
-          <div className='buttonDiv'>
+          <div className='practiceButtonDiv'>
             <button id="0" type="button" className="btn btn-warning" onClick={handleClick} disabled={isAnswered ? true : false}>{words[0].turkishWord}</button>
             <button id="1" type="button" className="btn btn-warning" onClick={handleClick} disabled={isAnswered ? true : false}>{words[1].turkishWord}</button>
             <button id="2" type="button" className="btn btn-warning" onClick={handleClick} disabled={isAnswered ? true : false}>{words[2].turkishWord}</button>

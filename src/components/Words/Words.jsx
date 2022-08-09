@@ -124,15 +124,15 @@ export default function Words(props) {
                 <td>{word.turkishWord}</td>
                 <td>{word.englishWord}</td>
                 <td>
-                <button type="button" className="btn btn-info button" onClick={() => updateWord(word.id)}>Update Word</button>
-                <button type="button" className="btn btn-danger button" onClick={() => removeWord(word.id)}>Remove Word</button>
+                <button type="button" className="btn btn-info button" onClick={() => updateWord(word.id)}><i className="fa fa-refresh" aria-hidden="true"></i></button>
+                <button type="button" className="btn btn-danger button" onClick={() => removeWord(word.id)}><i className="fa fa-trash"></i></button>
                 </td>
               </tr>
             )}
             {isAddWordClicked ? <WordAddForm setIsWordsChanged={setIsWordsChanged}></WordAddForm> : null}
           </tbody>
         </table>
-        <button id='addButton' type="button" className="btn btn-warning btn-circle btn-xl addButton" onClick={addWord} style={ isAddWordClicked ? {visibility:"hidden"} : null}>Add Word</button>
+        <button id='addButton' type="button" className="btn btn-warning btn-circle btn-xl addButton" onClick={addWord} style={ isAddWordClicked ? {visibility:"hidden"} : null}><i style={{fontSize:"30px", color:"white"}} class="fa fa-plus" aria-hidden="true"></i></button>
       </div>
       <PaginationNav renderedAt="words" pageNumberArray={pageNumberArray} handlePaginationButtonClick={handlePaginationButtonClick} pageNumber={pageNumber} currentPage={currentPage}></PaginationNav>
       </div>

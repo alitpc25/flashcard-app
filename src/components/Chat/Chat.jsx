@@ -6,6 +6,7 @@ import { RefreshTokenRequest, AccessTokenRequest } from "../../services/HttpServ
 import "./Chat.css"
 import ChatMessaging from "./ChatMessaging"
 import { useSelector } from 'react-redux'
+import { toast } from "react-toastify"
 
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
@@ -71,10 +72,10 @@ export default function Chat(props) {
                     allMessageHistory.current = (res.data)
                 }).catch(error => {
                     console.log(error)
-					if (error.response.status === 401 && userReducer.userLoggedIn) {
-						AccessTokenRequest(userReducer.currentUserId)
-						RefreshTokenRequest()
-					}
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
                 }).then(() => {
                     axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
                         headers: {
@@ -118,11 +119,37 @@ export default function Chat(props) {
         getMessagesAndChat(e.target.id)
     }
 
+    const toastProperties = {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+    }
+
+    const deleteChat = (userId, friendId) => {
+        axios.delete("/chat/privateChat?userId=" + userId + "&friendId=" + friendId, {
+            headers: {
+                Authorization: localStorage.getItem("tokenKey")
+            }
+        }).then(function (res) {
+            toast.success("Chat successfully deleted.", { toastProperties });
+        }).catch(function (error) {
+                console.log(error);
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
+                    RefreshTokenRequest()
+                }
+            });
+    }
+
     //Websocket.
     const connect = () => {
         let socket = new SockJS('https://vocabuilder.herokuapp.com/chat');
         stompClient = over(socket);
-        stompClient.debug = function (){};//do nothing
+        stompClient.debug = function () { };//do nothing
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/messages', function (notificationResponse) {
                 showNotificationResponse(JSON.parse(notificationResponse.body));
@@ -172,7 +199,12 @@ export default function Chat(props) {
                         <div className="col-sm fixedPosition">
                             <h1 className="display-4">Friends</h1>
                             <ul className="list-group">
-                                {friendships.map(f => (<button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>))}
+                                {friendships.map(f => (
+                                    <div className='chatButtonDiv'>
+                                        <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>
+                                        <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{fontSize:"25px"}} className="fa fa-trash"></i></button>
+                                    </div>
+                                ))}
                             </ul>
                         </div>
                     </div>
