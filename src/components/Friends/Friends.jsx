@@ -12,7 +12,10 @@ export default function Friends(props) {
 
     const handleFriendshipAccept = (e) => {
         if (e.target.id) {
-            axios.get("/friends/acceptFriendshipRequest?userId=" + user.id + "&friendId=" + e.target.id,
+            axios.put("/friends/acceptFriendshipRequest", {
+                    userId: userReducer.currentUserId,
+                    friendId: e.target.id
+                },
                 {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
@@ -31,7 +34,7 @@ export default function Friends(props) {
 
     const handleFriendshipDecline = (e) => {
         if (e.target.id) {
-            axios.get("/friends/declineFriendshipRequest?userId=" + user.id + "&friendId=" + e.target.id,
+            axios.delete("/friends/declineFriendshipRequest?userId=" + userReducer.currentUserId + "&friendId=" + e.target.id,
                 {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
@@ -61,7 +64,7 @@ export default function Friends(props) {
                         {friendships.map(f => (<li className="list-group-item bg-warning bg-gradient">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</li>))}
                     </ul>
                 </div>
-                {user.id === userIdParam ? 
+                {userReducer.currentUserId === userIdParam ? 
                 <div className="col-sm">
                     <h1 className="display-4">Requests</h1>
                     <ul className="list-group">
