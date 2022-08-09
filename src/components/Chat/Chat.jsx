@@ -91,6 +91,7 @@ export default function Chat(props) {
                         }
                     }).then(res => {
                         setMessageHistoryOfFriend(res.data)
+                        connect(res.data)
                         allMessageHistory.current = allMessageHistory.current.concat(res.data)
                     }).catch(error => {
                         console.log(error)
@@ -102,9 +103,6 @@ export default function Chat(props) {
                 }).then(() => {
                     if (myRef.current) {
                         myRef.current.scrollIntoView({ behavior: 'smooth' })
-                    }
-                    if (stompClient == null && messageHistoryOfFriend) {
-                        connect()
                     }
                 }).catch(error => {
                     console.log(error)
@@ -165,13 +163,13 @@ export default function Chat(props) {
     }
 
     //Websocket.
-    const connect = () => {
+    const connect = (messageHistoryOfFriendData) => {
         let socket = new SockJS('https://vocabuilder.herokuapp.com/chat');
         stompClient = over(socket);
         stompClient.debug = function () { };//do nothing
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/messages', function (notificationResponse) {
-                showNotificationResponse(JSON.parse(notificationResponse.body));
+                showNotificationResponse(JSON.parse(notificationResponse.body), messageHistoryOfFriendData);
             });
         });
     }
@@ -182,9 +180,9 @@ export default function Chat(props) {
         return txt.value;
     }
 
-    function showNotificationResponse(message) {
+    function showNotificationResponse(message, messageHistoryOfFriendData) {
         if (message.userId != userReducer.currentUserId && selectedFriendId.current == message.userId) {
-            setMessageHistoryOfFriend([...messageHistoryOfFriend, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
+            setMessageHistoryOfFriend([...messageHistoryOfFriendData, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
             allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
         }
     }
