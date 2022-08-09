@@ -21,8 +21,14 @@
     td, th{
         font-size: 0.8rem;
     }
+    .wordsButtons {
+        display: flex;
+        margin: auto;
+        justify-content: space-evenly;
+        align-items:center;
+    }
     .button {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     .addButton {
         position: fixed;

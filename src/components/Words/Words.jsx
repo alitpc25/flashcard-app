@@ -123,7 +123,7 @@ export default function Words(props) {
                 <th scope="row" >{(currentPage-1)*wordsPerPage+index++}</th>
                 <td>{word.turkishWord}</td>
                 <td>{word.englishWord}</td>
-                <td>
+                <td className='wordsButtons'>
                 <button type="button" className="btn btn-info button" onClick={() => updateWord(word.id)}><i className="fa fa-refresh" aria-hidden="true"></i></button>
                 <button type="button" className="btn btn-danger button" onClick={() => removeWord(word.id)}><i className="fa fa-trash"></i></button>
                 </td>
