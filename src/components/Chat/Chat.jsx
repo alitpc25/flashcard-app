@@ -135,6 +135,10 @@ export default function Chat(props) {
                 Authorization: localStorage.getItem("tokenKey")
             }
         }).then(function (res) {
+            setMessageHistoryOfUser(null)
+            setMessageHistoryOfFriend(null)
+            allMessageHistory.current = null
+            setChatData(null)
             toast.success("Chat successfully deleted.", { toastProperties });
         }).catch(function (error) {
                 console.log(error);
