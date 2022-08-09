@@ -291,6 +291,7 @@ export default function User(props) {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(function (res) {
+                setIsFriendshipExist(false)
                 toast.success("Friendship successfully ended.", { toastProperties });
             }).catch(function (error) {
                     console.log(error);
@@ -314,7 +315,7 @@ export default function User(props) {
             getIsFriendshipAlreadyReceived()
             getIsFriendshipExist()
         }
-    }, [userIdParam, isFriendshipAlreadyReceived, isFriendComponentDatasChanged, isFriendshipAlreadyRequested])
+    }, [userIdParam, isFriendshipAlreadyReceived, isFriendComponentDatasChanged, isFriendshipAlreadyRequested, isFriendshipExist])
 
     //Modal Delete
     const [show, setShow] = useState(false);
