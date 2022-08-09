@@ -19,6 +19,7 @@ export const AccessTokenRequest = (userId) => {
     .then(function (response) {
         localStorage.setItem("tokenKey", response.data.jwtAccessToken)
         localStorage.setItem("refreshKey", response.data.jwtRefreshToken)
+        this.props.history.push('/')
     }).catch(function (error) {
         console.log(error);
     }
