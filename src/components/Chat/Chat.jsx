@@ -199,7 +199,7 @@ export default function Chat(props) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
         }
         if (stompClient == null && messageHistoryOfFriend) {
-            connect()
+            connect(messageHistoryOfFriend)
         }
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend])
 
