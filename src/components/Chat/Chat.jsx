@@ -77,28 +77,35 @@ export default function Chat(props) {
                         RefreshTokenRequest()
                     }
                 })
-            }).catch(error => {
-                console.log(error)
-                if (error.response.status === 401 && userReducer.userLoggedIn) {
-                    AccessTokenRequest(userReducer.currentUserId)
-                    RefreshTokenRequest()
-                }
-            })
-
-            //Friend chat data
-            axios.get("/chat/privateChat/toFriend?userId=" + user.id + "&friendId=" + friendId, {
-                headers: {
-                    Authorization: localStorage.getItem("tokenKey")
-                }
-            }).then(res => {
-                setFriendChatData(res.data)
-                axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
+            }).then(() => {
+                //Friend chat data
+                axios.get("/chat/privateChat/toFriend?userId=" + user.id + "&friendId=" + friendId, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
                 }).then(res => {
-                    setMessageHistoryOfFriend(res.data)
-                    allMessageHistory.current = allMessageHistory.current.concat(res.data)
+                    setFriendChatData(res.data)
+                    axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
+                        headers: {
+                            Authorization: localStorage.getItem("tokenKey")
+                        }
+                    }).then(res => {
+                        setMessageHistoryOfFriend(res.data)
+                        allMessageHistory.current = allMessageHistory.current.concat(res.data)
+                    }).catch(error => {
+                        console.log(error)
+                        if (error.response.status === 401 && userReducer.userLoggedIn) {
+                            AccessTokenRequest(userReducer.currentUserId)
+                            RefreshTokenRequest()
+                        }
+                    })
+                }).then(() => {
+                    if (myRef.current) {
+                        myRef.current.scrollIntoView({ behavior: 'smooth' })
+                    }
+                    if (stompClient == null && messageHistoryOfFriend) {
+                        connect()
+                    }
                 }).catch(error => {
                     console.log(error)
                     if (error.response.status === 401 && userReducer.userLoggedIn) {
@@ -106,20 +113,14 @@ export default function Chat(props) {
                         RefreshTokenRequest()
                     }
                 })
-            }).then(() => {
-                if (myRef.current) {
-                    myRef.current.scrollIntoView({ behavior: 'smooth' })
-                }
-                if (stompClient == null && messageHistoryOfFriend) {
-                    connect()
-                }
-            }).catch(error => {
-                console.log(error)
-                if (error.response.status === 401 && userReducer.userLoggedIn) {
-                    AccessTokenRequest(userReducer.currentUserId)
-                    RefreshTokenRequest()
-                }
             })
+                .catch(error => {
+                    console.log(error)
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
+                    }
+                })
             setIsAllDataFetched(true)
         }
     }
