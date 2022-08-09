@@ -41,8 +41,8 @@ export default function Chat(props) {
         }
     }
 
-    const [chatData, setChatData] = useState(null);
-    const [chatId, setChatId] = useState(0);
+    const [userChatData, setUserChatData] = useState(null);
+    const [friendChatData, setFriendChatData] = useState(null);
     const [messageHistoryOfUser, setMessageHistoryOfUser] = useState(null)
     const [messageHistoryOfFriend, setMessageHistoryOfFriend] = useState(null)
     const allMessageHistory = useRef(null)
@@ -56,13 +56,13 @@ export default function Chat(props) {
     const getMessagesAndChat = (friendId) => {
         setFriendId(friendId);
         if (user.id && friendId) {
-            axios.get("/chat/privateChat?userId=" + user.id + "&friendId=" + friendId, {
+            //User chat data
+            axios.get("/chat/privateChat/toUser?userId=" + user.id + "&friendId=" + friendId, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
-                setChatData(res.data)
-                setChatId(res.data.id)
+                setUserChatData(res.data)
                 axios.get("chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + user.id, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
@@ -76,29 +76,43 @@ export default function Chat(props) {
                         AccessTokenRequest(userReducer.currentUserId)
                         RefreshTokenRequest()
                     }
-                }).then(() => {
-                    axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
-                        headers: {
-                            Authorization: localStorage.getItem("tokenKey")
-                        }
-                    }).then(res => {
-                        setMessageHistoryOfFriend(res.data)
-                        allMessageHistory.current = allMessageHistory.current.concat(res.data)
-                    }).catch(error => {
-                        console.log(error)
-                        if (error.response.status === 401 && userReducer.userLoggedIn) {
-                            AccessTokenRequest(userReducer.currentUserId)
-                            RefreshTokenRequest()
-                        }
-                    })
-                }).then(() => {
-                    if (myRef.current) {
-                        myRef.current.scrollIntoView({ behavior: 'smooth' })
+                })
+            }).catch(error => {
+                console.log(error)
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
+                    RefreshTokenRequest()
+                }
+            })
+
+            //Friend chat data
+            axios.get("/chat/privateChat/toFriend?userId=" + user.id + "&friendId=" + friendId, {
+                headers: {
+                    Authorization: localStorage.getItem("tokenKey")
+                }
+            }).then(res => {
+                setFriendChatData(res.data)
+                axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
+                    headers: {
+                        Authorization: localStorage.getItem("tokenKey")
                     }
-                    if (stompClient == null && messageHistoryOfFriend) {
-                        connect()
+                }).then(res => {
+                    setMessageHistoryOfFriend(res.data)
+                    allMessageHistory.current = allMessageHistory.current.concat(res.data)
+                }).catch(error => {
+                    console.log(error)
+                    if (error.response.status === 401 && userReducer.userLoggedIn) {
+                        AccessTokenRequest(userReducer.currentUserId)
+                        RefreshTokenRequest()
                     }
                 })
+            }).then(() => {
+                if (myRef.current) {
+                    myRef.current.scrollIntoView({ behavior: 'smooth' })
+                }
+                if (stompClient == null && messageHistoryOfFriend) {
+                    connect()
+                }
             }).catch(error => {
                 console.log(error)
                 if (error.response.status === 401 && userReducer.userLoggedIn) {
@@ -138,15 +152,15 @@ export default function Chat(props) {
             setMessageHistoryOfUser(null)
             setMessageHistoryOfFriend(null)
             allMessageHistory.current = null
-            setChatData(null)
+            setUserChatData(null)
             toast.success("Chat successfully deleted.", { toastProperties });
         }).catch(function (error) {
-                console.log(error);
-                if (error.response.status === 401 && userReducer.userLoggedIn) {
-                    AccessTokenRequest(userReducer.currentUserId)
-                    RefreshTokenRequest()
-                }
-            });
+            console.log(error);
+            if (error.response.status === 401 && userReducer.userLoggedIn) {
+                AccessTokenRequest(userReducer.currentUserId)
+                RefreshTokenRequest()
+            }
+        });
     }
 
     //Websocket.
@@ -206,7 +220,7 @@ export default function Chat(props) {
                                 {friendships.map(f => (
                                     <div className='chatButtonDiv'>
                                         <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>
-                                        <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{fontSize:"25px"}} className="fa fa-trash"></i></button>
+                                        <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
                                 ))}
                             </ul>
@@ -221,7 +235,7 @@ export default function Chat(props) {
                                     }).map(message => (
                                         messageHistoryOfUser.includes(message) ?
                                             (<UserMessage message={message}></UserMessage>) :
-                                            (<FriendMessage chatData={chatData} user={user} message={message}></FriendMessage>)
+                                            (<FriendMessage userChatData={userChatData} user={user} message={message}></FriendMessage>)
                                     )
                                     )}
                                     <div ref={myRef}></div>
@@ -229,7 +243,7 @@ export default function Chat(props) {
                             </div> : null
                         }
                     </div>
-                    <ChatMessaging setMessageHistoryOfUser={setMessageHistoryOfUser} setMessageHistoryOfFriend={setMessageHistoryOfFriend} messageHistoryOfUser={messageHistoryOfUser} messageHistoryOfFriend={messageHistoryOfFriend} allMessageHistory={allMessageHistory} sendNotification={sendNotification} user={user} chatData={chatData} friendId={friendId}></ChatMessaging>
+                    <ChatMessaging setMessageHistoryOfUser={setMessageHistoryOfUser} setMessageHistoryOfFriend={setMessageHistoryOfFriend} messageHistoryOfUser={messageHistoryOfUser} messageHistoryOfFriend={messageHistoryOfFriend} allMessageHistory={allMessageHistory} sendNotification={sendNotification} user={user} userChatData={userChatData} friendId={friendId}></ChatMessaging>
                 </div>
             </div>
         )

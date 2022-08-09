@@ -9,7 +9,7 @@ export default function ChatMessaging(props) {
 
     const userReducer = useSelector((state) => state.userReducer)
 
-    const {user, chatData, friendId, sendNotification, messageHistoryOfUser, allMessageHistory, setMessageHistoryOfUser} = props;
+    const {user, userChatData, friendId, sendNotification, messageHistoryOfUser, allMessageHistory, setMessageHistoryOfUser} = props;
 
     const initialValues = {
         text: ""
@@ -26,9 +26,9 @@ export default function ChatMessaging(props) {
     const [isDataChanged, setIsDataChanged] = useState(false)
 
     const handleSubmissionRequest = (values) => {
-        let friendId = chatData.friend.id;
+        let friendId = userChatData.friend.id;
         if (friendId === user.id) {
-            friendId = chatData.user.id;
+            friendId = userChatData.user.id;
         }
         axios.post("/chat/privateChat?userId=" + user.id + "&friendId=" + friendId, {
             text: values.text
