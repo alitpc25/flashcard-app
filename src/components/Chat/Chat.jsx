@@ -249,7 +249,7 @@ export default function Chat(props) {
         console.log(doesNewMessageOfFriendExist)
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist])
 
-    if (!friendships) {
+    if (!friendships || !isFriendshipsFetched) {
         return (<div className="d-flex align-items-center justify-content-center">
             <strong>Loading...</strong>
             <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
@@ -265,7 +265,7 @@ export default function Chat(props) {
                                 {friendships.map(f => (
                                     <div className='chatButtonDiv'>
                                         <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}
-                                            {doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex++] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex-1]}</span> : null}
+                                            {doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex++]}</span> : null}
                                         </button>
                                         <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
