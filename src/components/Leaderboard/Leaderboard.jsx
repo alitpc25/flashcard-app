@@ -14,8 +14,6 @@ function User() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [userList, setUserList] = useState([])
 
-  let index = 1;
-
   function compare( a, b ) {
     if ( a.score < b.score ){
       return +1;
@@ -67,9 +65,9 @@ function User() {
             </tr>
           </thead>
           <tbody>
-            {userList.map(user => (
+            {userList.map((user, index) => (
               <tr key={user.id}>
-                <td>{index++}</td>
+                <td>{index}</td>
                 <td><Link className="navbar-brand text-light" to={"/profile?userId="+user.id}>{user.username}</Link></td>
                 <td>{user.score}</td>
               </tr>
