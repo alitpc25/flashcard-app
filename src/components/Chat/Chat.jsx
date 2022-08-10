@@ -24,7 +24,6 @@ export default function Chat(props) {
     const [friendships, setFriendships] = useState(null);
     const [doesNewMessageOfFriendExist, setDoesNewMessageOfFriendExist] = useState([]);
     const [friendIndex, setFriendIndex] = useState([])
-    var doesNewMessageOfFriendExistIndex = 0;
     var friendSearchIndex = 0;
 
     const getFriendships = () => {
@@ -249,7 +248,7 @@ export default function Chat(props) {
         console.log(doesNewMessageOfFriendExist)
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist])
 
-    if (!friendships || !isFriendshipsFetched) {
+    if (!friendships || !isFriendshipsFetched || !isAllDataFetched) {
         return (<div className="d-flex align-items-center justify-content-center">
             <strong>Loading...</strong>
             <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
