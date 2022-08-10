@@ -262,10 +262,10 @@ export default function Chat(props) {
                         <div className="col-sm fixedPosition">
                             <h1 className="display-4">Friends</h1>
                             <ul className="list-group">
-                                {friendships.map(f => (
+                                {friendships.map((f, index) => (
                                     <div className='chatButtonDiv'>
                                         <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}
-                                            {doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex++]}</span> : null}
+                                            {doesNewMessageOfFriendExist[index] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[index]}</span> : null}
                                         </button>
                                         <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
