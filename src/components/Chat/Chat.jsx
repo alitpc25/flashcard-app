@@ -24,8 +24,8 @@ export default function Chat(props) {
     const [friendships, setFriendships] = useState(null);
     //const [doesNewMessageOfFriendExist, setDoesNewMessageOfFriendExist] = useState([]);
     //const [friendIds, setFriendIds] = useState([])
-    const doesNewMessageOfFriendExist = useRef(new Array())
-    const friendIds = useRef(new Array())
+    const doesNewMessageOfFriendExist = useRef([])
+    const friendIds = useRef([])
 
     const getFriendships = () => {
         if (userReducer.currentUserId) {
@@ -42,14 +42,14 @@ export default function Chat(props) {
                         friendRequestId = f.user.id;
                     }
                     //setFriendIds([...friendIds, friendRequestId])
-                    friendIds.current = friendIds.current.push(friendRequestId)
+                    friendIds.current = friendIds.current.concat([friendRequestId])
                     axios.get("/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
                     }).then(res => {
                         //setDoesNewMessageOfFriendExist([...doesNewMessageOfFriendExist, res.data])
-                        doesNewMessageOfFriendExist.current = doesNewMessageOfFriendExist.current.push(res.data)
+                        doesNewMessageOfFriendExist.current = doesNewMessageOfFriendExist.current.concat([res.data])
                     }).catch(error => {
                         console.log(error)
                         if (error.response.status === 401 && userReducer.userLoggedIn) {
