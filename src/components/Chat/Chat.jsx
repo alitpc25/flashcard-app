@@ -46,6 +46,7 @@ export default function Chat(props) {
                         }
                     }).then(res => {
                         setDoesNewMessageOfFriendExist([...doesNewMessageOfFriendExist, res.data])
+                        console.log(doesNewMessageOfFriendExist)
                         setFriendIndex([...friendIndex, friendSearchIndex++])
                     }).catch(error => {
                         console.log(error)
@@ -245,7 +246,6 @@ export default function Chat(props) {
         if (stompClient == null && messageHistoryOfFriend) {
             connect(messageHistoryOfFriend)
         }
-        console.log(doesNewMessageOfFriendExist)
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist])
 
     if (!friendships || !isFriendshipsFetched || !isAllDataFetched) {
@@ -265,8 +265,6 @@ export default function Chat(props) {
                                     <div className='chatButtonDiv'>
                                         <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}
                                             {doesNewMessageOfFriendExist[index] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[index]}</span> : null}
-                                            {doesNewMessageOfFriendExist}
-                                            {index}
                                         </button>
                                         <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
