@@ -248,7 +248,7 @@ export default function Chat(props) {
         }
     }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist])
 
-    if (!friendships || !isFriendshipsFetched || !isAllDataFetched) {
+    if (!friendships || !isFriendshipsFetched) {
         return (<div className="d-flex align-items-center justify-content-center">
             <strong>Loading...</strong>
             <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
