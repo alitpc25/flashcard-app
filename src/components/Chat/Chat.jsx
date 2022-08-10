@@ -159,7 +159,7 @@ export default function Chat(props) {
                 }
             })
             //const newState = doesNewMessageOfFriendExist.slice() //copy the array
-            friendIndexToChange = friendIds.current.indexOf(friendId)
+            var friendIndexToChange = friendIds.current.indexOf(friendId)
             //newState[friendIndexToChange] = 0 //execute the manipulations
             //setDoesNewMessageOfFriendExist(newState);
             doesNewMessageOfFriendExist.current[friendIndexToChange] = 0;
