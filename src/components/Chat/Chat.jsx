@@ -35,7 +35,7 @@ export default function Chat(props) {
                 }
             }).then(res => {
                 setFriendships(res.data)
-                res.data.map((f, index) => {
+                res.data.map((f) => {
                     var friendRequestId = f.friend.id;
                     if (f.friend.id === userReducer.currentUserId) {
                         friendRequestId = f.user.id;
@@ -65,7 +65,6 @@ export default function Chat(props) {
     }
 
     const [userChatData, setUserChatData] = useState(null);
-    const [friendChatData, setFriendChatData] = useState(null);
     const [messageHistoryOfUser, setMessageHistoryOfUser] = useState(null)
     const [messageHistoryOfFriend, setMessageHistoryOfFriend] = useState(null)
     const allMessageHistory = useRef(null)
@@ -120,7 +119,6 @@ export default function Chat(props) {
                         Authorization: localStorage.getItem("tokenKey")
                     }
                 }).then(res => {
-                    setFriendChatData(res.data)
                     axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
@@ -217,7 +215,7 @@ export default function Chat(props) {
     }
 
     function showNotificationResponse(message, messageHistoryOfFriendData) {
-        if (message.userId != userReducer.currentUserId && selectedFriendId.current == message.userId) {
+        if (message.userId !== userReducer.currentUserId && selectedFriendId.current === message.userId) {
             setMessageHistoryOfFriend([...messageHistoryOfFriendData, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
             allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
         }
