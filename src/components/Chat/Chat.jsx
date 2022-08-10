@@ -24,7 +24,7 @@ export default function Chat(props) {
     const [friendships, setFriendships] = useState(null);
     const [doesNewMessageOfFriendExist, setDoesNewMessageOfFriendExist] = useState([]);
     const [friendIndex, setFriendIndex] = useState([])
-    var friendSearchIndex = 0;
+    const [friendIds, setFriendIds] = useState([])
 
     const getFriendships = () => {
         if (userReducer.currentUserId) {
@@ -35,19 +35,19 @@ export default function Chat(props) {
             }).then(res => {
                 setFriendships(res.data)
                 //send message exist request here with res.data
-                res.data.map(f => {
+                res.data.map((f, index) => {
                     var friendRequestId = f.friend.id;
                     if (f.friend.id === userReducer.currentUserId) {
                         friendRequestId = f.user.id;
                     }
+                    setFriendIds([...friendIds, friendRequestId])
                     axios.get("/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
                     }).then(res => {
                         setDoesNewMessageOfFriendExist([...doesNewMessageOfFriendExist, res.data])
-                        console.log(doesNewMessageOfFriendExist)
-                        setFriendIndex([...friendIndex, friendSearchIndex++])
+                        setFriendIndex([...friendIndex, index])
                     }).catch(error => {
                         console.log(error)
                         if (error.response.status === 401 && userReducer.userLoggedIn) {
@@ -157,7 +157,8 @@ export default function Chat(props) {
                 }
             })
             const newState = doesNewMessageOfFriendExist.slice() //copy the array
-            newState[friendSearchIndex] = 0 //execute the manipulations
+            friendIndexToChange = friendIds.indexOf(friendId)
+            newState[friendIndexToChange] = 0 //execute the manipulations
             setDoesNewMessageOfFriendExist(newState);
             setIsAllDataFetched(true)
         }
