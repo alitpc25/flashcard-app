@@ -272,7 +272,7 @@ export default function Chat(props) {
                                         <button id={friendIdInMap} key={friendIdInMap} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{friendUsernameInMap}
                                             {friendIdAndNotification.get(friendIdInMap) > 0 ? <span className="badge">{friendIdAndNotification.get(friendIdInMap)}</span> : null}
                                         </button>
-                                        <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
+                                        <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendIdInMap)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
                                 )})}
                             </ul>
