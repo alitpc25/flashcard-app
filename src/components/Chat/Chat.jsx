@@ -22,10 +22,10 @@ export default function Chat(props) {
     const { user } = props;
 
     const [friendships, setFriendships] = useState(null);
-    //const [doesNewMessageOfFriendExist, setDoesNewMessageOfFriendExist] = useState([]);
-    //const [friendIds, setFriendIds] = useState([])
-    const doesNewMessageOfFriendExist = useRef([])
-    const friendIds = useRef([])
+    const [friendIdAndNotification, setFriendIdAndNotification] = useState(new Map())
+    const updateMap = (k,v) => {
+        setFriendIdAndNotification(new Map(friendIdAndNotification.set(k,v)));
+    }
 
     const getFriendships = () => {
         if (userReducer.currentUserId) {
@@ -35,21 +35,17 @@ export default function Chat(props) {
                 }
             }).then(res => {
                 setFriendships(res.data)
-                //send message exist request here with res.data
                 res.data.map((f, index) => {
                     var friendRequestId = f.friend.id;
                     if (f.friend.id === userReducer.currentUserId) {
                         friendRequestId = f.user.id;
                     }
-                    //setFriendIds([...friendIds, friendRequestId])
-                    friendIds.current = friendIds.current.concat([friendRequestId])
                     axios.get("/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
                     }).then(res => {
-                        //setDoesNewMessageOfFriendExist([...doesNewMessageOfFriendExist, res.data])
-                        doesNewMessageOfFriendExist.current = doesNewMessageOfFriendExist.current.concat([res.data])
+                        updateMap(friendRequestId, res.data)
                     }).catch(error => {
                         console.log(error)
                         if (error.response.status === 401 && userReducer.userLoggedIn) {
@@ -158,11 +154,7 @@ export default function Chat(props) {
                     RefreshTokenRequest()
                 }
             })
-            //const newState = doesNewMessageOfFriendExist.slice() //copy the array
-            var friendIndexToChange = friendIds.current.indexOf(friendId)
-            //newState[friendIndexToChange] = 0 //execute the manipulations
-            //setDoesNewMessageOfFriendExist(newState);
-            doesNewMessageOfFriendExist.current[friendIndexToChange] = 0;
+            updateMap(parseInt(friendId), 0)
             setIsAllDataFetched(true)
         }
     }
@@ -247,10 +239,10 @@ export default function Chat(props) {
         if (myRef.current) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
         }
-        if (stompClient == null && messageHistoryOfFriend) {
+        if (stompClient === null && messageHistoryOfFriend) {
             connect(messageHistoryOfFriend)
         }
-    }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist.current])
+    }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend])
 
     if (!friendships || !isFriendshipsFetched) {
         return (<div className="d-flex align-items-center justify-content-center">
@@ -265,14 +257,24 @@ export default function Chat(props) {
                         <div className="col-sm fixedPosition">
                             <h1 className="display-4">Friends</h1>
                             <ul className="list-group">
-                                {friendships.map((f, index) => (
+                                {friendships.map((f, index) => 
+                                {
+                                    let friendIdInMap = f.friend.id
+                                    let friendUsernameInMap = f.friend.username
+                                    if (f.friend.id === user.id) {
+                                        friendIdInMap = f.user.id
+                                    }
+                                    if (f.friend.username === user.username) {
+                                        friendUsernameInMap = f.user.username
+                                    }
+                                    return (
                                     <div className='chatButtonDiv'>
-                                        <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}
-                                            {doesNewMessageOfFriendExist.current[index] > 0 ? <span className="badge">{doesNewMessageOfFriendExist.current[index]}</span> : null}
+                                        <button id={friendIdInMap} key={friendIdInMap} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{friendUsernameInMap}
+                                            {friendIdAndNotification.get(friendIdInMap) > 0 ? <span className="badge">{friendIdAndNotification.get(friendIdInMap)}</span> : null}
                                         </button>
                                         <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
-                                ))}
+                                )})}
                             </ul>
                         </div>
                     </div>
