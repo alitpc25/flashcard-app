@@ -49,6 +49,14 @@
     margin-top: 0.5rem;
 }
 
+.badge {
+    margin-left: 10px;
+    padding: 5px 5px;
+    border-radius: 50%;
+    background: rgb(247, 65, 33);
+    color: white;
+  }
+
 @media (max-width: 768px) {
     .messageDiv {
         width: 100%;

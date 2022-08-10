@@ -22,6 +22,10 @@ export default function Chat(props) {
     const { user } = props;
 
     const [friendships, setFriendships] = useState(null);
+    const [doesNewMessageOfFriendExist, setDoesNewMessageOfFriendExist] = useState([]);
+    const [friendIndex, setFriendIndex] = useState([])
+    var doesNewMessageOfFriendExistIndex = 0;
+    var friendSearchIndex = 0;
 
     const getFriendships = () => {
         if (userReducer.currentUserId) {
@@ -31,6 +35,27 @@ export default function Chat(props) {
                 }
             }).then(res => {
                 setFriendships(res.data)
+                //send message exist request here with res.data
+                res.data.map(f => {
+                    var friendRequestId = f.friend.id;
+                    if (f.friend.id === userReducer.currentUserId) {
+                        friendRequestId = f.user.id;
+                    }
+                    axios.get("/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
+                        headers: {
+                            Authorization: localStorage.getItem("tokenKey")
+                        }
+                    }).then(res => {
+                        setDoesNewMessageOfFriendExist([...doesNewMessageOfFriendExist, res.data])
+                        setFriendIndex([...friendIndex, friendSearchIndex++])
+                    }).catch(error => {
+                        console.log(error)
+                        if (error.response.status === 401 && userReducer.userLoggedIn) {
+                            AccessTokenRequest(userReducer.currentUserId)
+                            RefreshTokenRequest()
+                        }
+                    })
+                })
             }).catch(error => {
                 console.log(error)
                 if (error.response.status === 401 && userReducer.userLoggedIn) {
@@ -56,6 +81,19 @@ export default function Chat(props) {
     const getMessagesAndChat = (friendId) => {
         setFriendId(friendId);
         if (userReducer.currentUserId && friendId) {
+            axios.put("chat/privateChat/messages/friend/allMessagesSeen?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {},
+            {
+                headers: {
+                  Authorization: localStorage.getItem("tokenKey")
+                }
+            }).then(function (response) {
+            }).catch(function (error) {
+                console.log(error)
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
+                  AccessTokenRequest(userReducer.currentUserId)
+                  RefreshTokenRequest()
+                }
+            });
             //User chat data
             axios.get("/chat/privateChat/toUser?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
                 headers: {
@@ -111,14 +149,16 @@ export default function Chat(props) {
                         RefreshTokenRequest()
                     }
                 })
+            }).catch(error => {
+                console.log(error)
+                if (error.response.status === 401 && userReducer.userLoggedIn) {
+                    AccessTokenRequest(userReducer.currentUserId)
+                    RefreshTokenRequest()
+                }
             })
-                .catch(error => {
-                    console.log(error)
-                    if (error.response.status === 401 && userReducer.userLoggedIn) {
-                        AccessTokenRequest(userReducer.currentUserId)
-                        RefreshTokenRequest()
-                    }
-                })
+            const newState = doesNewMessageOfFriendExist.slice() //copy the array
+            newState[friendSearchIndex] = 0 //execute the manipulations
+            setDoesNewMessageOfFriendExist(newState);
             setIsAllDataFetched(true)
         }
     }
@@ -193,15 +233,21 @@ export default function Chat(props) {
         }));
     }
 
+    const [isFriendshipsFetched, setIsFriendshipsFetched] = useState(false)
+
     useEffect(() => {
-        getFriendships();
+        if(!isFriendshipsFetched) {
+            getFriendships();
+            setIsFriendshipsFetched(true)
+        }
         if (myRef.current) {
             myRef.current.scrollIntoView({ behavior: 'auto' })
         }
         if (stompClient == null && messageHistoryOfFriend) {
             connect(messageHistoryOfFriend)
         }
-    }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend])
+        console.log(doesNewMessageOfFriendExist)
+    }, [isAllDataFetched, myRef.current, messageHistoryOfUser, messageHistoryOfFriend, doesNewMessageOfFriendExist])
 
     if (!friendships) {
         return (<div className="d-flex align-items-center justify-content-center">
@@ -218,7 +264,9 @@ export default function Chat(props) {
                             <ul className="list-group">
                                 {friendships.map(f => (
                                     <div className='chatButtonDiv'>
-                                        <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}</button>
+                                        <button key={f.friend.id === user.id ? f.user.id : f.friend.id} id={f.friend.id === user.id ? f.user.id : f.friend.id} onClick={handleFriendSelectClick} className="list-group-item bg-light bg-gradient friendSelectButton">{(f.friend.username === user.username) ? f.user.username : f.friend.username}
+                                            {doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex++] > 0 ? <span className="badge">{doesNewMessageOfFriendExist[doesNewMessageOfFriendExistIndex-1]}</span> : null}
+                                        </button>
                                         <button type="button" className="btn btn-danger button" onClick={() => deleteChat(user.id, friendId)}><i style={{ fontSize: "25px" }} className="fa fa-trash"></i></button>
                                     </div>
                                 ))}

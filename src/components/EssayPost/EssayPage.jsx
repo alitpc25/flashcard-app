@@ -43,10 +43,10 @@ export default function EssayPage(props) {
           setEssay(res.data)
         }).catch(error => {
           console.log(error)
-            if (error.response.status === 401 && userReducer.userLoggedIn) {
-                AccessTokenRequest(userReducer.currentUserId)
-                RefreshTokenRequest()
-            }
+          if (error.response.status === 401 && userReducer.userLoggedIn) {
+            AccessTokenRequest(userReducer.currentUserId)
+            RefreshTokenRequest()
+          }
         })
     }
   }
@@ -96,7 +96,7 @@ export default function EssayPage(props) {
       if (error.response.status === 401 && userReducer.userLoggedIn) {
         AccessTokenRequest(userReducer.currentUserId)
         RefreshTokenRequest()
-    }
+      }
     });
   }
 
@@ -146,7 +146,7 @@ export default function EssayPage(props) {
                         </div>
                       </div>
                     </div>
-                    <button id={essayId} type="submit" className="btn btn-success" style={{width:"50%", margin:"auto"}}>Submit Update</button>
+                    <button id={essayId} type="submit" className="btn btn-success" style={{ width: "50%", margin: "auto" }}>Submit Update</button>
                   </div>
                 </Form>
               )}
