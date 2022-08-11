@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import "./Auth.css"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { logIn } from '../../store/actions/userActions';
+import { Link } from "react-router-dom"
 
 export default function Auth() {
 
@@ -100,6 +101,7 @@ export default function Auth() {
                         <button type="submit"className='btn btn-info submitButton' >
                             Login
                         </button>
+                        <Link style={{margin:"8px auto"}}className="nav-link" to="/auth/login/forgotPassword">Forgot your password?</Link>
                         <p className='text-center mt-4'>Don't you have an account?</p>
                         <button type="button" className='btn btn-info submitButton' onClick={() => navigate("../auth/register")}>
                             Register

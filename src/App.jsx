@@ -22,6 +22,8 @@ import { useSelector } from 'react-redux'
 import User from "./components/User/User";
 import EssayPage from "./components/EssayPost/EssayPage";
 import Chat from "./components/Chat/Chat";
+import AuthLoginChangePassword from "./components/Auth/AuthLoginChangePassword";
+import AuthLoginForgotPassword from "./components/Auth/AuthLoginForgotPassword";
 
 
 function App() {
@@ -87,6 +89,8 @@ function App() {
 				<Route exact path="/profile" element={userReducer.userLoggedIn ? <User user={user} wordsLength={wordsLength} /> : <Navigate replace to="/auth/register" />} />
 				<Route exact path="/auth/register" element={userReducer.userLoggedIn ? <Navigate replace to="/" /> : <AuthRegister />} />
 				<Route exact path="/auth/login" element={userReducer.userLoggedIn ? <Navigate replace to="/" /> : <AuthLogin />} />
+				<Route exact path="/auth/login/forgotPassword" element={userReducer.userLoggedIn ? <Navigate replace to="/" /> : <AuthLoginForgotPassword />} />
+				<Route exact path="/auth/login/changePassword" element={userReducer.userLoggedIn ? <Navigate replace to="/" /> : <AuthLoginChangePassword />} />
 				<Route exact path="/auth/register/confirm" element={userReducer.userLoggedIn ? <Navigate replace to="/" /> : <AuthRegisterConfirm />} />
 				<Route exact path="/leaderboard" element={userReducer.userLoggedIn ? <Leaderboard /> : <Navigate replace to="/auth/register" />} />
 				<Route exact path="/words" element={userReducer.userLoggedIn ? <Words currentUserId={currentUserId} getAllWordsRequest={getAllWordsRequest} /> : <Navigate replace to="/auth/register" />} />
