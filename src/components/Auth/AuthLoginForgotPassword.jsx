@@ -41,6 +41,7 @@ export default function AuthLoginChangePassword() {
             email: values.email
         }).then(function (response) {
             toast.success(response.data.message, { toastProperties });
+            navigate("../auth/login/changePassword")
         }).catch(function (error) {
             toast.error(error.response.data, {
                 position: "top-right",
@@ -64,7 +65,6 @@ export default function AuthLoginChangePassword() {
                 validationSchema={ForgotPasswordSchema}
                 onSubmit={(values) => {
                     handleForgotPasswordRequest(values)
-                    navigate("../auth/login/changePassword")
                 }}
             >
                 {() => (
