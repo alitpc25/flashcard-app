@@ -36,7 +36,7 @@ function App() {
 
 	const getUserRequest = () => {
 		if (currentUserId) {
-			axios.get(`/users/${currentUserId}`, {
+			axios.get(`/api/users/${currentUserId}`, {
 				headers: {
 					Authorization: localStorage.getItem("tokenKey")
 				}
@@ -54,7 +54,7 @@ function App() {
 	}
 
 	const getAllWordsRequest = () => {
-		axios.get(`/words/allWords?userId=` + currentUserId, {
+		axios.get(`/api/words/allWords?userId=` + currentUserId, {
 			headers: {
 				Authorization: localStorage.getItem("tokenKey")
 			}

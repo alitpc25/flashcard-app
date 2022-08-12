@@ -30,7 +30,7 @@ export default function ChatMessaging(props) {
         if (friendId === user.id) {
             friendId = userChatData.user.id;
         }
-        axios.post("/chat/privateChat?userId=" + user.id + "&friendId=" + friendId, {
+        axios.post("/api/chat/privateChat?userId=" + user.id + "&friendId=" + friendId, {
             text: values.text
         },
             {

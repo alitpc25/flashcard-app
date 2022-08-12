@@ -33,7 +33,7 @@ export default function WordUpdateForm(props) {
     }
 
     const handleUpdate = (wordId) => {
-        axios.put("/words/"+wordId,{
+        axios.put("/api/words/"+wordId,{
             englishWord: englishWordInput,
             turkishWord: turkishWordInput,
             userId: localStorage.getItem("currentUserId")

@@ -58,7 +58,7 @@ export default function Auth() {
     const dispatch = useDispatch()
 
     const handleSubmissionRequest = (values) => {
-        axios.post("/auth/register", {
+        axios.post("/api/auth/register", {
             email: values.email,
             username: values.username,
             password: values.password

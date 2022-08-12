@@ -55,7 +55,7 @@ export default function Essay(props) {
 
     const getEssaysRequest = () => {
         if (!essays || isEssaysChanged) {
-            axios.get("/essays/sortByTime" + sortText + "?pageSize=" + essaysPerPage + "&page=" + currentPage + "&userId=" + userIdParam, {
+            axios.get("/api/essays/sortByTime" + sortText + "?pageSize=" + essaysPerPage + "&page=" + currentPage + "&userId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -89,7 +89,7 @@ export default function Essay(props) {
     }
 
     const handleDeleteButton = (e) => {
-        axios.delete("/essays/" + e.target.id, {
+        axios.delete("/api/essays/" + e.target.id, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }
@@ -107,7 +107,7 @@ export default function Essay(props) {
 
     const handleSearchByTitle = (e) => {
         e.preventDefault()
-        axios.get("/essays/searchByTitle?pageSize=" + essaysPerPage + "&page=" + currentPage + "&userId=" + userIdParam + "&title=" + searchText, {
+        axios.get("/api/essays/searchByTitle?pageSize=" + essaysPerPage + "&page=" + currentPage + "&userId=" + userIdParam + "&title=" + searchText, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }

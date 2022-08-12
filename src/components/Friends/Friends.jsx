@@ -12,7 +12,7 @@ export default function Friends(props) {
 
     const handleFriendshipAccept = (e) => {
         if (e.target.id) {
-            axios.put("/friends/acceptFriendshipRequest", {
+            axios.put("/api/friends/acceptFriendshipRequest", {
                     userId: userReducer.currentUserId,
                     friendId: e.target.id
                 },
@@ -34,7 +34,7 @@ export default function Friends(props) {
 
     const handleFriendshipDecline = (e) => {
         if (e.target.id) {
-            axios.delete("/friends/declineFriendshipRequest?userId=" + userReducer.currentUserId + "&friendId=" + e.target.id,
+            axios.delete("/api/friends/declineFriendshipRequest?userId=" + userReducer.currentUserId + "&friendId=" + e.target.id,
                 {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")

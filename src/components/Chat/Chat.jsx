@@ -29,7 +29,7 @@ export default function Chat(props) {
 
     const getFriendships = () => {
         if (userReducer.currentUserId) {
-            axios.get("/friends?userId=" + userReducer.currentUserId, {
+            axios.get("/api/friends?userId=" + userReducer.currentUserId, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -40,7 +40,7 @@ export default function Chat(props) {
                     if (f.friend.id === userReducer.currentUserId) {
                         friendRequestId = f.user.id;
                     }
-                    axios.get("/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
+                    axios.get("/api/chat/privateChat/messages/friend/doesUnseenMessageExist?userId=" + userReducer.currentUserId + "&friendId=" + friendRequestId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
@@ -78,7 +78,7 @@ export default function Chat(props) {
     const getMessagesAndChat = (friendId) => {
         setFriendId(friendId);
         if (userReducer.currentUserId && friendId) {
-            axios.put("chat/privateChat/messages/friend/allMessagesSeen?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {},
+            axios.put("/api/chat/privateChat/messages/friend/allMessagesSeen?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {},
             {
                 headers: {
                   Authorization: localStorage.getItem("tokenKey")
@@ -92,13 +92,13 @@ export default function Chat(props) {
                 }
             });
             //User chat data
-            axios.get("/chat/privateChat/toUser?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
+            axios.get("/api/chat/privateChat/toUser?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
             }).then(res => {
                 setUserChatData(res.data)
-                axios.get("chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + userReducer.currentUserId, {
+                axios.get("/api/chat/privateChat/messages/user?chatId=" + res.data.id + "&userId=" + userReducer.currentUserId, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
@@ -114,12 +114,12 @@ export default function Chat(props) {
                 })
             }).then(() => {
                 //Friend chat data
-                axios.get("/chat/privateChat/toFriend?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
+                axios.get("/api/chat/privateChat/toFriend?userId=" + userReducer.currentUserId + "&friendId=" + friendId, {
                     headers: {
                         Authorization: localStorage.getItem("tokenKey")
                     }
                 }).then(res => {
-                    axios.get("chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
+                    axios.get("/api/chat/privateChat/messages/friend?chatId=" + res.data.id + "&friendId=" + friendId, {
                         headers: {
                             Authorization: localStorage.getItem("tokenKey")
                         }
@@ -177,7 +177,7 @@ export default function Chat(props) {
     }
 
     const deleteChat = (userId, friendId) => {
-        axios.delete("/chat/privateChat?userId=" + userId + "&friendId=" + friendId, {
+        axios.delete("/api/chat/privateChat?userId=" + userId + "&friendId=" + friendId, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }

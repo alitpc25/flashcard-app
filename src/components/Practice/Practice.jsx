@@ -23,7 +23,7 @@ export default function Practice(props) {
   const [randomNum, setRandomNum] = useState(0)
 
   const getWordsRequest = () => {
-    axios.get(`/words/getFourDifferentWords/`+localStorage.getItem("currentUserId"),{
+    axios.get(`/api/words/getFourDifferentWords/`+localStorage.getItem("currentUserId"),{
       headers: {
         Authorization: localStorage.getItem("tokenKey")
       }
@@ -74,7 +74,7 @@ export default function Practice(props) {
       }
     }
     if(isAnswerCorrect) {
-      axios.put(`/users/updateScoreByUserId/`+localStorage.getItem("currentUserId"),{
+      axios.put(`/api/users/updateScoreByUserId/`+localStorage.getItem("currentUserId"),{
         score: correctAnswerNumber.current
       }, {
         headers: {

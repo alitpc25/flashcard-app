@@ -30,7 +30,7 @@ export default function Words(props) {
   }
   
   const getWordsRequest = (wordsPerPage, currentUserId, currentPage) => {
-      axios.get("/words?pageSize=" + wordsPerPage + "&userId=" + currentUserId +"&page=" + currentPage,{
+      axios.get("/api/words?pageSize=" + wordsPerPage + "&userId=" + currentUserId +"&page=" + currentPage,{
         headers: {
           Authorization: localStorage.getItem("tokenKey")
         }
@@ -63,7 +63,7 @@ export default function Words(props) {
   }
 
   const removeWord = (wordId) => {
-    axios.delete("/words/" + wordId,{
+    axios.delete("/api/words/" + wordId,{
       headers: {
         Authorization: localStorage.getItem("tokenKey")
       }

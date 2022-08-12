@@ -50,7 +50,7 @@ export default function AuthLoginSavePasswordSuccess() {
 
   const handleChangePassword = (values) => {
     if(values.confirmPassword === values.newPassword) {
-      axios.post("/auth/login/changePassword", {
+      axios.post("/api/auth/login/changePassword", {
         email: values.email,
         newPassword: values.newPassword,
         confirmPassword: values.confirmPassword,

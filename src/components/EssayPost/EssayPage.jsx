@@ -34,7 +34,7 @@ export default function EssayPage(props) {
 
   const getEssayByIdRequest = () => {
     if (!isUpdateButtonClicked) {
-      axios.get(`/essays/essay?essayId=${essayId}&userId=${userIdParam}`, {
+      axios.get(`/api/essays/essay?essayId=${essayId}&userId=${userIdParam}`, {
         headers: {
           Authorization: localStorage.getItem("tokenKey")
         }
@@ -80,7 +80,7 @@ export default function EssayPage(props) {
   }
 
   const handleSubmitUpdateButton = (values) => {
-    axios.put("/essays/" + essayId, {
+    axios.put("/api/essays/" + essayId, {
       title: values.title,
       text: values.text,
       userId: localStorage.getItem("currentUserId")

@@ -42,7 +42,7 @@ export default function Auth() {
     const dispatch = useDispatch()
 
     const handleSubmissionRequest = (values) => {
-        axios.post("/auth/login", {
+        axios.post("/api/auth/login", {
             username: values.username,
             password: values.password
         }).then(function (response) {

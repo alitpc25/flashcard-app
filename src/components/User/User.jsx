@@ -31,7 +31,7 @@ export default function User(props) {
 
     const getForeignUserRequest = () => {
         if (userIdParam) {
-            axios.get(`/users/${userIdParam}`, {
+            axios.get(`/api/users/${userIdParam}`, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -50,7 +50,7 @@ export default function User(props) {
 
     const getAllWordsOfForeignUserRequest = () => {
         if (userIdParam) {
-            axios.get(`/words/allWords?userId=` + userIdParam, {
+            axios.get(`/api/words/allWords?userId=` + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -78,7 +78,7 @@ export default function User(props) {
     }
 
     const deleteAccountRequest = () => {
-        axios.delete("/users/" + userReducer.currentUserId, {
+        axios.delete("/api/users/" + userReducer.currentUserId, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }
@@ -100,7 +100,7 @@ export default function User(props) {
     }
 
     const handleUpdateRequest = (values) => {
-        axios.put("/users/" + userReducer.currentUserId, {
+        axios.put("/api/users/" + userReducer.currentUserId, {
             username: values.username,
             oldPassword: values.oldPassword,
             newPassword: values.newPassword
@@ -160,7 +160,7 @@ export default function User(props) {
     });
 
     const handleSendFriendshipRequest = () => {
-        axios.get("/friends/addFriend?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+        axios.get("/api/friends/addFriend?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
             headers: {
                 Authorization: localStorage.getItem("tokenKey")
             }
@@ -188,7 +188,7 @@ export default function User(props) {
 
     const getFriendships = () => {
         if (userIdParam) {
-            axios.get("/friends?userId=" + userIdParam, {
+            axios.get("/api/friends?userId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -208,7 +208,7 @@ export default function User(props) {
 
     const getFriendshipRequests = () => {
         if (userIdParam) {
-            axios.get("/friends/friendRequests?userId=" + userIdParam, {
+            axios.get("/api/friends/friendRequests?userId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -228,7 +228,7 @@ export default function User(props) {
 
     const getIsFriendshipAlreadyRequested = () => {
         if (userIdParam && userReducer.currentUserId) {
-            axios.get("/friends/isFriendshipAlreadyRequested?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+            axios.get("/api/friends/isFriendshipAlreadyRequested?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -248,7 +248,7 @@ export default function User(props) {
 
     const getIsFriendshipAlreadyReceived = () => {
         if (userIdParam && userReducer.currentUserId) {
-            axios.get("/friends/isFriendshipAlreadyReceived?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+            axios.get("/api/friends/isFriendshipAlreadyReceived?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -268,7 +268,7 @@ export default function User(props) {
 
     const getIsFriendshipExist = () => {
         if (userIdParam && userReducer.currentUserId) {
-            axios.get("/friends/isFriendshipExist?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+            axios.get("/api/friends/isFriendshipExist?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }
@@ -286,7 +286,7 @@ export default function User(props) {
 
     const handleEndFriendship = () => {
         if(userIdParam) {
-            axios.delete("/friends?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
+            axios.delete("/api/friends?userId=" + userReducer.currentUserId + "&friendId=" + userIdParam, {
                 headers: {
                     Authorization: localStorage.getItem("tokenKey")
                 }

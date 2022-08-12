@@ -20,7 +20,7 @@ export default function WordAddForm(props) {
     }
 
     const handleSubmit = () => {
-        axios.post("/words",{
+        axios.post("/api/words",{
             englishWord: englishWordInput,
             turkishWord: turkishWordInput,
             userId: localStorage.getItem("currentUserId")

@@ -37,7 +37,7 @@ export default function AuthLoginChangePassword() {
     });
 
     const handleForgotPasswordRequest = (values) => {
-        axios.post("/auth/login/forgotPassword", {
+        axios.post("/api/auth/login/forgotPassword", {
             email: values.email
         }).then(function (response) {
             toast.success(response.data.message, { toastProperties });

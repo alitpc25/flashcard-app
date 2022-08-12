@@ -38,7 +38,7 @@ export default function EssayInsert(props) {
     }
 
     const handleSubmissionRequest = (values) => {
-        axios.post("/essays", {
+        axios.post("/api/essays", {
             text: values.text,
             title: values.title,
             userId: userId

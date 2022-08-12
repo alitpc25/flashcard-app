@@ -25,7 +25,7 @@ function User() {
   }
 
   useEffect(() => {
-    axios.get('/users', {
+    axios.get('/api/users', {
       headers: {
         Authorization: localStorage.getItem("tokenKey")
       }
