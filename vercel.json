@@ -1,8 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "https://vocabuilder.herokuapp.com"
+            "source": "api/:path*",
+            "destination": "https://vocabuilder.herokuapp.com/:path*"
         }
     ]
 }
