@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { logIn } from '../../store/actions/userActions';
 import { Link } from "react-router-dom"
@@ -39,8 +38,6 @@ export default function Auth() {
         draggable: true,
         progress: undefined
     }
-
-    let navigate = useNavigate();
 
     const dispatch = useDispatch()
 
@@ -101,11 +98,8 @@ export default function Auth() {
                         <button type="submit"className='btn btn-info submitButton' >
                             Login
                         </button>
-                        <Link style={{margin:"8px auto"}}className="nav-link" to="/auth/login/forgotPassword">Forgot your password?</Link>
-                        <p className='text-center mt-4'>Don't you have an account?</p>
-                        <button type="button" className='btn btn-info submitButton' onClick={() => navigate("../auth/register")}>
-                            Register
-                        </button>
+                        <Link style={{margin:"10px auto"}}className="nav-link" to="/auth/login/forgotPassword">Forgot your password?</Link>
+                        <Link style={{margin:"10px auto"}}className="nav-link" to="/auth/register">Don't have an account?</Link>
                     </Form>
                 )}
             </Formik>
