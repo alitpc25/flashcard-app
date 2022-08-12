@@ -59,7 +59,7 @@ function Header(props) {
               <li className="nav-item ml-auto">
                 {currentUserId ?
                   <Link className="nav-link active text-light" to="/" onClick={logOut}>Log Out</Link> :
-                  <Link className="nav-link active text-light" to="/">Log In</Link>}
+                  <Link className="nav-link active text-light" to="/" onClick={() => collapseNav()}>Log In</Link>}
               </li>
             </ul>
           </div>
