@@ -67,7 +67,7 @@ function User() {
           <tbody>
             {userList.map((user, index) => (
               <tr key={user.id}>
-                <td>{index}</td>
+                <td>{index+1}</td>
                 <td><Link className="navbar-brand text-light" to={"/profile?userId="+user.id}>{user.username}</Link></td>
                 <td>{user.score}</td>
               </tr>

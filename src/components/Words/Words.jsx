@@ -11,8 +11,6 @@ export default function Words(props) {
   const userReducer = useSelector((state) => state.userReducer)
   const {currentUserId, getAllWordsRequest} = props;
 
-  let index = 1;
-
   const [words, setWords] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [isWordsChanged, setIsWordsChanged] = useState(false)
@@ -117,10 +115,10 @@ export default function Words(props) {
             </tr>
           </thead>
           <tbody>
-            {words.map(word => isUpdateWordClicked && word.id === updateWordId ? <WordUpdateForm setIsUpdateWordClicked={setIsUpdateWordClicked} setIsWordsChanged={setIsWordsChanged} word={word}></WordUpdateForm> : 
+            {words.map((word,index) => isUpdateWordClicked && word.id === updateWordId ? <WordUpdateForm setIsUpdateWordClicked={setIsUpdateWordClicked} setIsWordsChanged={setIsWordsChanged} word={word}></WordUpdateForm> : 
                 
                 <tr key={word.id}>
-                <th scope="row" >{(currentPage-1)*wordsPerPage+index++}</th>
+                <th scope="row" >{(currentPage-1)*wordsPerPage+index+1}</th>
                 <td>{word.turkishWord}</td>
                 <td>{word.englishWord}</td>
                 <td className='wordsButtons'>
