@@ -56,7 +56,7 @@ export default function Auth() {
                 currentUserId: response.data.userId
             }))
         }).catch(function (error) {
-            toast.error(error.response.data, {
+            toast.error(error.response.statusText, {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
