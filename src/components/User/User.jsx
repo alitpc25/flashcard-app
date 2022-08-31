@@ -101,7 +101,6 @@ export default function User(props) {
 
     const handleUpdateRequest = (values) => {
         axios.put("/api/users/" + userReducer.currentUserId, {
-            username: values.username,
             oldPassword: values.oldPassword,
             newPassword: values.newPassword
         }, {
@@ -137,17 +136,11 @@ export default function User(props) {
     }
 
     const initialValues = {
-        username: "",
         oldPassword: "",
         newPassword: ""
     };
 
     const UpdateUserSchema = Yup.object().shape({
-        username: Yup.string()
-            .min(5, "Too Short!")
-            .max(25, "Too Long!")
-            .required("Username is required"),
-
         oldPassword: Yup.string()
             .required("Password is required")
             .min(5, "Too Short!")
@@ -452,13 +445,6 @@ export default function User(props) {
                                 >
                                     {() => (
                                         <Form className='form'>
-                                            <div className='formElementDiv'>
-                                                <label htmlFor="username">Username</label>
-                                                <div className='p-2'>
-                                                    <Field type="username" name="username" className='formField form-control' />
-                                                    <ErrorMessage name="username" component="div" />
-                                                </div>
-                                            </div>
                                             <div className='formElementDiv'>
                                                 <label htmlFor="oldPassword">Old Password</label>
                                                 <div className='p-2'>
