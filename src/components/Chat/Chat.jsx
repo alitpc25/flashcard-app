@@ -198,7 +198,7 @@ export default function Chat(props) {
 
     //Websocket.
     const connect = (messageHistoryOfFriendData) => {
-        let socket = new SockJS('https://vocabuilder.herokuapp.com/api/chat');
+        let socket = new SockJS('https://vocabuilder.herokuapp.com/chat');
         stompClient = over(socket);
         stompClient.debug = function () { };//do nothing
         stompClient.connect({}, function () {
