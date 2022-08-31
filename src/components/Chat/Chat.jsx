@@ -203,6 +203,7 @@ export default function Chat(props) {
         stompClient.debug = function () { };//do nothing
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/messages', function (notificationResponse) {
+                console.log(notificationResponse);
                 showNotificationResponse(JSON.parse(notificationResponse.body), messageHistoryOfFriendData);
             });
         });
