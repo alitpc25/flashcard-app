@@ -215,8 +215,6 @@ export default function Chat(props) {
     }
 
     function showNotificationResponse(message, messageHistoryOfFriendData) {
-        console.log(selectedFriendId.current)
-        console.log(message.userId)
         if (message.userId !== userReducer.currentUserId && selectedFriendId.current == message.userId) {
             setMessageHistoryOfFriend([...messageHistoryOfFriendData, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
             allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
