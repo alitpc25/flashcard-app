@@ -203,7 +203,6 @@ export default function Chat(props) {
         stompClient.debug = function () { };//do nothing
         stompClient.connect({}, function () {
             stompClient.subscribe('/topic/messages', function (notificationResponse) {
-                console.log(notificationResponse);
                 showNotificationResponse(JSON.parse(notificationResponse.body), messageHistoryOfFriendData);
             });
         });
@@ -216,6 +215,8 @@ export default function Chat(props) {
     }
 
     function showNotificationResponse(message, messageHistoryOfFriendData) {
+        console.log(message.userId !== userReducer.currentUserId)
+        console.log(selectedFriendId.current === message.userId)
         if (message.userId !== userReducer.currentUserId && selectedFriendId.current === message.userId) {
             setMessageHistoryOfFriend([...messageHistoryOfFriendData, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }])
             allMessageHistory.current = [...allMessageHistory.current, { id: message.id, sentAt: message.sentAt, text: decodeHtml(message.text) }]
