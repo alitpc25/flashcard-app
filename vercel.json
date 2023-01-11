@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/:path*",
-            "destination": "https://vocabuilder.herokuapp.com/:path*"
+            "destination": "https://flashcardapp-backend.onrender.com/:path*"
         }
     ]
 }
